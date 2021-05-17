@@ -1,0 +1,507 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="헤더 파일">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Manager">
+      <UniqueIdentifier>{e8ddd34d-f316-43f3-a371-4ad97b2654d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gameNode">
+      <UniqueIdentifier>{96417ea6-a84f-446a-b4c1-b426703b36bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mainGame">
+      <UniqueIdentifier>{26e80509-563a-4838-9c4a-7aae8f8c12e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="image">
+      <UniqueIdentifier>{1211de52-0852-4e01-90cd-7775514bd0fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iniData">
+      <UniqueIdentifier>{09d38c1e-65b7-4614-852e-d68e354143b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="loading">
+      <UniqueIdentifier>{0d072484-02e1-440f-9798-e64db0c311e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="singletonBase">
+      <UniqueIdentifier>{642e1bc3-8478-4af0-850a-1e380dbe3e48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Timer">
+      <UniqueIdentifier>{a43b3692-f3fa-4ab1-be9b-fd9cd82366c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UTIL">
+      <UniqueIdentifier>{827b390a-bfdb-4300-9388-b1d30bc5844d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="리소스 파일\소스 파일">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="mainGame\Scene">
+      <UniqueIdentifier>{441e2f8d-2d0c-4764-bd62-73ba8ef6ed61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mainGame\Object">
+      <UniqueIdentifier>{63485609-d91d-47ce-bfbb-2155aa8712f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mainGame\Skill">
+      <UniqueIdentifier>{8369b717-1b07-4cfb-ab0f-c83dc6af9f7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="txtData">
+      <UniqueIdentifier>{d50d8a43-c5b2-4595-af7a-14ed264e5932}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="progressBar">
+      <UniqueIdentifier>{a747e338-3633-4338-8355-f5e9e16b49b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="animation">
+      <UniqueIdentifier>{dd300559-ba31-4dd6-bec5-1d4609cab0d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mainGame\GameManager">
+      <UniqueIdentifier>{b2da7677-7579-49a6-ae50-70f0c80c2d9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mainGame\Object\UI">
+      <UniqueIdentifier>{d20d4907-792f-41b0-8802-f161432c749e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mainGame\Object\Camera">
+      <UniqueIdentifier>{0a7a8b1a-c8fd-447a-b652-79e0db5f6f85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mainGame\Object\Actor">
+      <UniqueIdentifier>{51450407-1831-4296-aa0c-e2f322880b3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mainGame\Object\Actor\Projectile">
+      <UniqueIdentifier>{bd087de6-6fff-419f-8152-7a8c89992206}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mainGame\Object\Actor\Obstacle">
+      <UniqueIdentifier>{94fb700b-8357-4184-9ea1-b6fea39a18dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mainGame\Object\Actor\Enemy">
+      <UniqueIdentifier>{afdb5862-eb54-441a-9d04-58a4d101fe26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mainGame\Object\Actor\Character">
+      <UniqueIdentifier>{1aa85130-0e0e-4eae-9910-9b22d771c69a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mainGame\Object\Actor\Effect">
+      <UniqueIdentifier>{692f7398-a021-483e-8f06-0cf6d6c45abb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mainGame\Object\Actor\Tile">
+      <UniqueIdentifier>{73dcc609-ece0-42b0-ba42-ba538bbeaaf0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mainGame\Object\Stage">
+      <UniqueIdentifier>{cbbbe13b-9245-4786-9675-91fe60f26830}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mainGame\Object\Actor\Particle">
+      <UniqueIdentifier>{e758fa45-f91e-4635-b1ab-9e5a165bba7b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="targetver.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="singletonBase.h">
+      <Filter>singletonBase</Filter>
+    </ClInclude>
+    <ClInclude Include="keyManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="gameNode.h">
+      <Filter>gameNode</Filter>
+    </ClInclude>
+    <ClInclude Include="mainGame.h">
+      <Filter>mainGame</Filter>
+    </ClInclude>
+    <ClInclude Include="randomFunction.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="utils.h">
+      <Filter>UTIL</Filter>
+    </ClInclude>
+    <ClInclude Include="image.h">
+      <Filter>image</Filter>
+    </ClInclude>
+    <ClInclude Include="imageManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="progressBar.h">
+      <Filter>progressBar</Filter>
+    </ClInclude>
+    <ClInclude Include="timer.h">
+      <Filter>Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="timeManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="iniData.h">
+      <Filter>iniData</Filter>
+    </ClInclude>
+    <ClInclude Include="sceneManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="soundManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="loading.h">
+      <Filter>loading</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="txtData.h">
+      <Filter>txtData</Filter>
+    </ClInclude>
+    <ClInclude Include="commonMacroFunction.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="animation.h">
+      <Filter>animation</Filter>
+    </ClInclude>
+    <ClInclude Include="animationManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene_MainGame.h">
+      <Filter>mainGame\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene_Title.h">
+      <Filter>mainGame\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>mainGame\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Skill.h">
+      <Filter>mainGame\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="Skill_Smash.h">
+      <Filter>mainGame\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="Skill_Tumbling.h">
+      <Filter>mainGame\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.h">
+      <Filter>mainGame\Object\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="SkillManager.h">
+      <Filter>mainGame\GameManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>mainGame\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyManager.h">
+      <Filter>mainGame\GameManager</Filter>
+    </ClInclude>
+    <ClInclude Include="ProjectileManager.h">
+      <Filter>mainGame\GameManager</Filter>
+    </ClInclude>
+    <ClInclude Include="UIManager.h">
+      <Filter>mainGame\GameManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Skill_Counter.h">
+      <Filter>mainGame\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="Skill_Explosion.h">
+      <Filter>mainGame\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="Skill_Projectile.h">
+      <Filter>mainGame\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="ObstacleManager.h">
+      <Filter>mainGame\GameManager</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_StatusBar.h">
+      <Filter>mainGame\Object\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>mainGame\Object\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>mainGame\Object\Actor\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Obstacle.h">
+      <Filter>mainGame\Object\Actor\Obstacle</Filter>
+    </ClInclude>
+    <ClInclude Include="Projectile.h">
+      <Filter>mainGame\Object\Actor\Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="Actor.h">
+      <Filter>mainGame\Object\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Character.h">
+      <Filter>mainGame\Object\Actor\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Character_PC.h">
+      <Filter>mainGame\Object\Actor\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Projectile_Straight.h">
+      <Filter>mainGame\Object\Actor\Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera_FollowCam.h">
+      <Filter>mainGame\Object\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_MainMenu.h">
+      <Filter>mainGame\Object\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_Pause.h">
+      <Filter>mainGame\Object\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="StatusBarManager.h">
+      <Filter>mainGame\GameManager</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterManager.h">
+      <Filter>mainGame\GameManager</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraManager.h">
+      <Filter>mainGame\GameManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy_Extra.h">
+      <Filter>mainGame\Object\Actor\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="TriggerManager.h">
+      <Filter>mainGame\GameManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene_Loading.h">
+      <Filter>mainGame\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_Background.h">
+      <Filter>mainGame\Object\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="EffectManager.h">
+      <Filter>mainGame\GameManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect.h">
+      <Filter>mainGame\Object\Actor\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene_MainMenu.h">
+      <Filter>mainGame\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_Mouse.h">
+      <Filter>mainGame\Object\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Tile.h">
+      <Filter>mainGame\Object\Actor\Tile</Filter>
+    </ClInclude>
+    <ClInclude Include="TileManager.h">
+      <Filter>mainGame\GameManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Obstacle_Broken.h">
+      <Filter>mainGame\Object\Actor\Obstacle</Filter>
+    </ClInclude>
+    <ClInclude Include="Obstacle_Unbroken.h">
+      <Filter>mainGame\Object\Actor\Obstacle</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage.h">
+      <Filter>mainGame\Object\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="StageManager.h">
+      <Filter>mainGame\GameManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>mainGame\Object\Actor\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleManager.h">
+      <Filter>mainGame\GameManager</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_Title.h">
+      <Filter>mainGame\Object\UI</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="keyManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="gameNode.cpp">
+      <Filter>gameNode</Filter>
+    </ClCompile>
+    <ClCompile Include="mainGame.cpp">
+      <Filter>mainGame</Filter>
+    </ClCompile>
+    <ClCompile Include="utils.cpp">
+      <Filter>UTIL</Filter>
+    </ClCompile>
+    <ClCompile Include="image.cpp">
+      <Filter>image</Filter>
+    </ClCompile>
+    <ClCompile Include="imageManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="timer.cpp">
+      <Filter>Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="timeManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="txtData.cpp">
+      <Filter>txtData</Filter>
+    </ClCompile>
+    <ClCompile Include="iniData.cpp">
+      <Filter>iniData</Filter>
+    </ClCompile>
+    <ClCompile Include="sceneManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="soundManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="loading.cpp">
+      <Filter>loading</Filter>
+    </ClCompile>
+    <ClCompile Include="winMain.cpp">
+      <Filter>리소스 파일\소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="progressBar.cpp">
+      <Filter>progressBar</Filter>
+    </ClCompile>
+    <ClCompile Include="animation.cpp">
+      <Filter>animation</Filter>
+    </ClCompile>
+    <ClCompile Include="animationManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>리소스 파일\소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>mainGame\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene_MainGame.cpp">
+      <Filter>mainGame\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene_Title.cpp">
+      <Filter>mainGame\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Skill.cpp">
+      <Filter>mainGame\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="Skill_Smash.cpp">
+      <Filter>mainGame\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="Skill_Tumbling.cpp">
+      <Filter>mainGame\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="UI.cpp">
+      <Filter>mainGame\Object\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="SkillManager.cpp">
+      <Filter>mainGame\GameManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>mainGame\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="ProjectileManager.cpp">
+      <Filter>mainGame\GameManager</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyManager.cpp">
+      <Filter>mainGame\GameManager</Filter>
+    </ClCompile>
+    <ClCompile Include="UIManager.cpp">
+      <Filter>mainGame\GameManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Skill_Counter.cpp">
+      <Filter>mainGame\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="Skill_Explosion.cpp">
+      <Filter>mainGame\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="Skill_Projectile.cpp">
+      <Filter>mainGame\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="ObstacleManager.cpp">
+      <Filter>mainGame\GameManager</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_StatusBar.cpp">
+      <Filter>mainGame\Object\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>mainGame\Object\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>mainGame\Object\Actor\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Obstacle.cpp">
+      <Filter>mainGame\Object\Actor\Obstacle</Filter>
+    </ClCompile>
+    <ClCompile Include="Projectile.cpp">
+      <Filter>mainGame\Object\Actor\Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="Actor.cpp">
+      <Filter>mainGame\Object\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Character.cpp">
+      <Filter>mainGame\Object\Actor\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Character_PC.cpp">
+      <Filter>mainGame\Object\Actor\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Projectile_Straight.cpp">
+      <Filter>mainGame\Object\Actor\Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera_FollowCam.cpp">
+      <Filter>mainGame\Object\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_Pause.cpp">
+      <Filter>mainGame\Object\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_MainMenu.cpp">
+      <Filter>mainGame\Object\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="StatusBarManager.cpp">
+      <Filter>mainGame\GameManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy_Extra.cpp">
+      <Filter>mainGame\Object\Actor\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterManager.cpp">
+      <Filter>mainGame\GameManager</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraManager.cpp">
+      <Filter>mainGame\GameManager</Filter>
+    </ClCompile>
+    <ClCompile Include="TriggerManager.cpp">
+      <Filter>mainGame\GameManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene_Loading.cpp">
+      <Filter>mainGame\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_Background.cpp">
+      <Filter>mainGame\Object\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="EffectManager.cpp">
+      <Filter>mainGame\GameManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect.cpp">
+      <Filter>mainGame\Object\Actor\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene_MainMenu.cpp">
+      <Filter>mainGame\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_Mouse.cpp">
+      <Filter>mainGame\Object\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Tile.cpp">
+      <Filter>mainGame\Object\Actor\Tile</Filter>
+    </ClCompile>
+    <ClCompile Include="TileManager.cpp">
+      <Filter>mainGame\GameManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Obstacle_Broken.cpp">
+      <Filter>mainGame\Object\Actor\Obstacle</Filter>
+    </ClCompile>
+    <ClCompile Include="Obstacle_Unbroken.cpp">
+      <Filter>mainGame\Object\Actor\Obstacle</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage.cpp">
+      <Filter>mainGame\Object\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="StageManager.cpp">
+      <Filter>mainGame\GameManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>mainGame\Object\Actor\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleManager.cpp">
+      <Filter>mainGame\GameManager</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_Title.cpp">
+      <Filter>mainGame\Object\UI</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

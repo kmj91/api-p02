@@ -1,0 +1,87 @@
+	// 맵 속성 정보
+	itr = Doc.FindMember("Properties");
+	if (itr != Doc.MemberEnd()) {
+		Value &PropertiesArray = Doc["Properties"];
+		for (SizeType i = 0; i < PropertiesArray.Size(); i++) {
+			Value &PropertiesObject = PropertiesArray[i];
+			itr = PropertiesObject.FindMember("iPropertiesWidth");
+			if (itr == PropertiesObject.MemberEnd()) {
+				break;
+			}
+			itr = PropertiesObject.FindMember("iPropertiesHeight");
+			if (itr == PropertiesObject.MemberEnd()) {
+				break;
+			}
+			itr = PropertiesObject.FindMember("iPropertiesSize");
+			if (itr == PropertiesObject.MemberEnd()) {
+				break;
+			}
+
+			iPropertiesWidth = PropertiesObject["iPropertiesWidth"].GetUint();
+			iPropertiesHeight = PropertiesObject["iPropertiesHeight"].GetUint();
+			iSize = PropertiesObject["iPropertiesSize"].GetUint();
+
+
+			g_ObjectStageMap->ResizeMap(iWidth, iHeight);
+
+			// 2019.08.10
+			// 너무 느려서 바꿈
+			//iCnt = 0;
+			//while (iCnt < iSize) {
+
+			//	wsprintfA(szObjectName, "%d", iCnt);
+
+			//	itr = PropertiesObject.FindMember(szObjectName);
+			//	if (itr == PropertiesObject.MemberEnd()) {
+			//		break;
+			//	}
+
+			//	g_ObjectStageMap->m_bypMapProperties[iCnt] = PropertiesObject[szObjectName].GetUint();
+
+			//	++iCnt;
+			//}
+
+
+
+			// 타일 속성이 저장되어있는 파일 이름
+			itr = PropertiesObject.FindMember("PropertiesFileName");
+			if (itr == PropertiesObject.MemberEnd()) {
+				break;
+			}
+
+			UTF8toUTF16(PropertiesObject["PropertiesFileName"].GetString(), FileName, 32);
+
+			// 파일 읽기
+			err = _wfopen_s(&fp, FileName, L"rt");
+			if (err != 0) {
+				return;
+			}
+
+			//fwrite(g_ObjectStageMap->m_bypMapProperties, iSize, 1, fp);
+			// 속성 읽기
+			// ResizeMap 함수를 호출해서 버퍼를 동적할당 해놨음
+			// 동적 할당한 곳에 파일 데이터 복사
+			fread_s(g_ObjectStageMap->m_bypMapProperties, iSize, iSize, 1, fp);
+			fclose(fp);
+
+		}
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+//UTF-8 -> UTF-16
+void UTF8toUTF16(const char *szText, WCHAR *szBuff, int iBuffLen) {
+	int iRe = MultiByteToWideChar(CP_UTF8, 0, szText, strlen(szText), szBuff, iBuffLen);
+	if (iRe < iBuffLen)
+		szBuff[iRe] = L'\0';
+	return;
+}
