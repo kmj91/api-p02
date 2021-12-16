@@ -1,3 +1,7 @@
+// 기명준
+// 유닛
+// 지형 위에 생성된 오브젝트들
+
 #include "stdafx.h"
 #include "ObjectUnit.h"
 
@@ -47,6 +51,11 @@ bool ObjectUnit::Click()
 	return false;
 }
 
+// 유닛 지우기
+// 유닛 스프라이트 범위 안에 있으면 지움
+// iEraseX : 지워질 좌표 X
+// iEraseY : 지워질 좌표 Y
+// 반환 값 : 지우면 true 아니면 false;
 bool ObjectUnit::Erase(int iEraseX, int iEraseY)
 {
 	if (m_dLeft < iEraseX && iEraseX < m_dRight &&

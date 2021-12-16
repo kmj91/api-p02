@@ -1,3 +1,7 @@
+// 기명준
+// 유닛
+// 지형 위에 생성된 오브젝트들
+
 #pragma once
 #include "Object.h"
 
@@ -15,6 +19,6 @@ public:
 
 private:
 
-	bool m_bEraseFlag;
+	bool m_bEraseFlag;		// 삭제 플래그
 };
 
