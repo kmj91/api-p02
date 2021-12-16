@@ -1,3 +1,7 @@
+// 기명준
+// 마우스 포인터 클래스
+// 메뉴에서 선택한 오브젝트를 실제 생성하기전 보여주는 역할을 함
+
 #include "stdafx.h"
 #include "ObjectMousePointer.h"
 

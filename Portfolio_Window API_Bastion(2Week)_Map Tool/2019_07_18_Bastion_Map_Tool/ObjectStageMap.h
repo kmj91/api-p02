@@ -1,3 +1,8 @@
+// 기명준
+// 스테이지 맵
+// 맵툴로 생성한 스테이지의 크기 및 속성 관리
+// Click 함수에서 현재 상태에 따라 전역 변수로 선언된 게임 오브젝트 리스트를 관리
+
 #pragma once
 #include "Object.h"
 class ObjectStageMap : public Object
@@ -23,9 +28,9 @@ public:
 	
 
 public:
-	BYTE *m_bypMapProperties;
-	int m_iPropertiesWidth;
-	int m_iPropertiesHeight;
-	int m_iPropertiesSize;
+	BYTE *m_bypMapProperties;	// 맵의 속성 배열
+	int m_iPropertiesWidth;		// 맵의 가로 길이
+	int m_iPropertiesHeight;	// 맵의 세로 길이
+	int m_iPropertiesSize;		// 맵의 크기 = (가로 * 세로)
 };
 
