@@ -1289,7 +1289,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			}
 		}
 
-		g_MousePointer->bRedOption = false;
+		g_MousePointer->m_bRedOption = false;
 
 		switch (g_MouseState)
 		{
@@ -1363,10 +1363,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			g_MousePointer->m_dY = g_iMouseY / df_TILE_PROPERTIES_SIZE * df_TILE_PROPERTIES_SIZE;
 
 			if (g_ObjectStageMap->CheckProperties(g_iMouseX / df_TILE_PROPERTIES_SIZE, g_iMouseY / df_TILE_PROPERTIES_SIZE)) {
-				g_MousePointer->bRedOption = false;
+				g_MousePointer->m_bRedOption = false;
 			}
 			else {
-				g_MousePointer->bRedOption = true;
+				g_MousePointer->m_bRedOption = true;
 			}
 
 			break;

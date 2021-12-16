@@ -14,7 +14,7 @@ ObjectMousePointer::ObjectMousePointer(int iPosX, int iPosY)
 	// 그리기 우선순위
 	m_iRenderPriority = df_RENDER_PRIORITY_LAST;
 	// 빨간색 그리기 옵션
-	bRedOption = false;
+	m_bRedOption = false;
 }
 
 
@@ -34,7 +34,7 @@ void ObjectMousePointer::Draw()
 
 	if (!g_bOnUIMouse) {
 		g_cSprite->DrawSprite(m_iSpriteIndex, m_dX, m_dY, g_bypDest, g_iDestWidth, g_iDestHeight, g_iDestPitch);
-		if (bRedOption) {
+		if (m_bRedOption) {
 			// 스프라이트 크기
 			m_iSpriteWidth = g_cSprite->m_stpSprite[m_iSpriteIndex].iWidth;
 			m_iSpriteHeight = g_cSprite->m_stpSprite[m_iSpriteIndex].iHeight;
