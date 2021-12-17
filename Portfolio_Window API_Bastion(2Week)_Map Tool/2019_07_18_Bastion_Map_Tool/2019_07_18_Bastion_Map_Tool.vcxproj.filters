@@ -60,12 +60,6 @@
     <ClInclude Include="ObjectMenuTitleBar.h">
       <Filter>오브젝트</Filter>
     </ClInclude>
-    <ClInclude Include="ObjectMenuTile.h">
-      <Filter>오브젝트</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjectMenuPlayer.h">
-      <Filter>오브젝트</Filter>
-    </ClInclude>
     <ClInclude Include="ObjectMenuElementList.h">
       <Filter>오브젝트</Filter>
     </ClInclude>
@@ -84,13 +78,7 @@
     <ClInclude Include="ObjectUnit.h">
       <Filter>오브젝트</Filter>
     </ClInclude>
-    <ClInclude Include="ObjectMenuObject.h">
-      <Filter>오브젝트</Filter>
-    </ClInclude>
     <ClInclude Include="ObjectMenuObjectElement.h">
-      <Filter>오브젝트</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjectMenuBroken.h">
       <Filter>오브젝트</Filter>
     </ClInclude>
     <ClInclude Include="ObjectMenuBrokenElement.h">
@@ -99,16 +87,13 @@
     <ClInclude Include="ObjectMenuElement.h">
       <Filter>오브젝트</Filter>
     </ClInclude>
-    <ClInclude Include="ObjectMenuEnemy.h">
-      <Filter>오브젝트</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjectMenuStage.h">
-      <Filter>오브젝트</Filter>
-    </ClInclude>
     <ClInclude Include="ObjectMenuStageElement.h">
       <Filter>오브젝트</Filter>
     </ClInclude>
     <ClInclude Include="ObjectMenuEnemyElement.h">
+      <Filter>오브젝트</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectMenuItem.h">
       <Filter>오브젝트</Filter>
     </ClInclude>
   </ItemGroup>
@@ -149,12 +134,6 @@
     <ClCompile Include="ObjectMenuTitleBar.cpp">
       <Filter>오브젝트</Filter>
     </ClCompile>
-    <ClCompile Include="ObjectMenuTile.cpp">
-      <Filter>오브젝트</Filter>
-    </ClCompile>
-    <ClCompile Include="ObjectMenuPlayer.cpp">
-      <Filter>오브젝트</Filter>
-    </ClCompile>
     <ClCompile Include="ObjectMenuElementList.cpp">
       <Filter>오브젝트</Filter>
     </ClCompile>
@@ -173,13 +152,7 @@
     <ClCompile Include="ObjectUnit.cpp">
       <Filter>오브젝트</Filter>
     </ClCompile>
-    <ClCompile Include="ObjectMenuObject.cpp">
-      <Filter>오브젝트</Filter>
-    </ClCompile>
     <ClCompile Include="ObjectMenuObjectElement.cpp">
-      <Filter>오브젝트</Filter>
-    </ClCompile>
-    <ClCompile Include="ObjectMenuBroken.cpp">
       <Filter>오브젝트</Filter>
     </ClCompile>
     <ClCompile Include="ObjectMenuBrokenElement.cpp">
@@ -188,16 +161,13 @@
     <ClCompile Include="ObjectMenuElement.cpp">
       <Filter>오브젝트</Filter>
     </ClCompile>
-    <ClCompile Include="ObjectMenuEnemy.cpp">
-      <Filter>오브젝트</Filter>
-    </ClCompile>
-    <ClCompile Include="ObjectMenuStage.cpp">
-      <Filter>오브젝트</Filter>
-    </ClCompile>
     <ClCompile Include="ObjectMenuStageElement.cpp">
       <Filter>오브젝트</Filter>
     </ClCompile>
     <ClCompile Include="ObjectMenuEnemyElement.cpp">
+      <Filter>오브젝트</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectMenuItem.cpp">
       <Filter>오브젝트</Filter>
     </ClCompile>
   </ItemGroup>

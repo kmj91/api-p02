@@ -1,14 +1,18 @@
+// 기명준
+// UI 메뉴 항목
+// 메뉴의 하위 리스트에 들어가는 개별 요소를 대표하는 품목
+
 #include "stdafx.h"
-#include "ObjectMenuPlayer.h"
+#include "ObjectMenuItem.h"
 #include "ObjectMenu.h"
 
-ObjectMenuPlayer::ObjectMenuPlayer(int iPosX, int iPosY, ObjectMenu * MenuPtr)
+ObjectMenuItem::ObjectMenuItem(int iPosX, int iPosY, int iSpriteIndex, FocusMenu eItemType, ObjectMenu * MenuPtr)
 {
 	// 위치
 	m_dX = iPosX;
 	m_dY = iPosY;
 	// 스프라이트 번호
-	m_iSpriteIndex = df_SPRITE_MENU_PLAYER;
+	m_iSpriteIndex = iSpriteIndex;
 	// 오브젝트 범위
 	m_dLeft = m_dX - g_cSprite->m_stpSprite[m_iSpriteIndex].iCenterPointX;
 	m_dTop = m_dY - g_cSprite->m_stpSprite[m_iSpriteIndex].iCenterPointY;
@@ -16,26 +20,28 @@ ObjectMenuPlayer::ObjectMenuPlayer(int iPosX, int iPosY, ObjectMenu * MenuPtr)
 	m_dBottom = m_dTop + g_cSprite->m_stpSprite[m_iSpriteIndex].iHeight;
 	// 그리기 우선순위
 	m_iRenderPriority = 0;
+	// 항목 타입
+	m_eItemType = eItemType;
 	// 메뉴 포인터
 	m_MenuPtr = MenuPtr;
 }
 
 
-ObjectMenuPlayer::~ObjectMenuPlayer()
+ObjectMenuItem::~ObjectMenuItem()
 {
 }
 
-bool ObjectMenuPlayer::Action()
+bool ObjectMenuItem::Action()
 {
 	return false;
 }
 
-void ObjectMenuPlayer::Draw()
+void ObjectMenuItem::Draw()
 {
 	g_cSprite->DrawImage(m_iSpriteIndex, m_dX, m_dY, g_bypDest, g_iDestWidth, g_iDestHeight, g_iDestPitch, false);
 }
 
-bool ObjectMenuPlayer::Click()
+bool ObjectMenuItem::Click()
 {
 	int iMouseX;
 	int iMouseY;
@@ -49,8 +55,9 @@ bool ObjectMenuPlayer::Click()
 
 	if (m_dLeft < iMouseX && iMouseX < m_dRight &&
 		m_dTop < iMouseY && iMouseY < m_dBottom) {
-
-		m_MenuPtr->m_ChangeMenu = FOCUS_MENU_PLAYER;
+		
+		// 메뉴에 전달할 식별 타입
+		m_MenuPtr->m_ChangeMenu = m_eItemType;
 
 		return true;
 	}
@@ -58,7 +65,7 @@ bool ObjectMenuPlayer::Click()
 	return false;
 }
 
-void ObjectMenuPlayer::Move(int iMoveValueX, int iMoveValueY)
+void ObjectMenuItem::Move(int iMoveValueX, int iMoveValueY)
 {
 	m_dX = m_dX - iMoveValueX;
 	m_dY = m_dY - iMoveValueY;

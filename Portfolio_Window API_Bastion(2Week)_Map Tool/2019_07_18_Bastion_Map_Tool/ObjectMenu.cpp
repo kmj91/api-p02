@@ -5,12 +5,7 @@
 #include "stdafx.h"
 #include "ObjectMenu.h"
 #include "ObjectMenuTitleBar.h"
-#include "ObjectMenuTile.h"
-#include "ObjectMenuStage.h"
-#include "ObjectMenuPlayer.h"
-#include "ObjectMenuObject.h"
-#include "ObjectMenuBroken.h"
-#include "ObjectMenuEnemy.h"
+#include "ObjectMenuItem.h"
 #include "ObjectMenuElementList.h"
 
 
@@ -49,22 +44,22 @@ ObjectMenu::ObjectMenu(int iPosX, int iPosY)
 	m_ChangeMenu = FOCUS_MENU_EMPT;
 
 	// 타일 메뉴
-	newObject = new ObjectMenuTile(m_dX + 5, m_dY + 45, this);
+	newObject = new ObjectMenuItem(m_dX + 5, m_dY + 45, df_SPRITE_MENU_TILE, FOCUS_MENU_TILE, this);
 	m_MenuObjectList->push_back(newObject);
 	// 스테이지 메뉴
-	newObject = new ObjectMenuStage(m_dX + 60, m_dY + 45, this);
+	newObject = new ObjectMenuItem(m_dX + 60, m_dY + 45, df_SPRITE_MENU_STAGE, FOCUS_MENU_STAGE, this);
 	m_MenuObjectList->push_back(newObject);
 	// 플레이어 메뉴
-	newObject = new ObjectMenuPlayer(m_dX + 115, m_dY + 45, this);
+	newObject = new ObjectMenuItem(m_dX + 115, m_dY + 45, df_SPRITE_MENU_PLAYER, FOCUS_MENU_PLAYER, this);
 	m_MenuObjectList->push_back(newObject);
 	// 물체 메뉴
-	newObject = new ObjectMenuObject(m_dX + 170, m_dY + 45, this);
+	newObject = new ObjectMenuItem(m_dX + 170, m_dY + 45, df_SPRITE_MENU_OBJECT, FOCUS_MENU_OBJECT, this);
 	m_MenuObjectList->push_back(newObject);
 	// 부셔지는 물체 메뉴
-	newObject = new ObjectMenuBroken(m_dX + 225, m_dY + 45, this);
+	newObject = new ObjectMenuItem(m_dX + 225, m_dY + 45, df_SPRITE_MENU_BROKEN, FOCUS_MENU_BROKEN, this);
 	m_MenuObjectList->push_back(newObject);
 	// 적 메뉴
-	newObject = new ObjectMenuEnemy(m_dX + 280, m_dY + 45, this);
+	newObject = new ObjectMenuItem(m_dX + 280, m_dY + 45, df_SPRITE_MENU_ENEMY, FOCUS_MENU_ENEMY, this);
 	m_MenuObjectList->push_back(newObject);
 
 	//-------------------------------------
@@ -103,6 +98,13 @@ bool ObjectMenu::Action()
 {
 	// 교체할 항목이 있으면
 	if (m_ChangeMenu != FOCUS_MENU_EMPT) {
+		// 교체할 항목이 현재 포커스된 항목과 같으면 무시
+		if (m_FocusMenu == m_ChangeMenu)
+		{
+			m_ChangeMenu = FOCUS_MENU_EMPT;
+			return false;
+		}
+		
 		// 교체
 		m_FocusMenu = m_ChangeMenu;
 		// 리스트 요소 갱신
