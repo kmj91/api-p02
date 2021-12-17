@@ -1,3 +1,7 @@
+// 기명준
+// 메뉴 하위 리스트
+// 선택한 항목의 요소들을 보여줌
+
 #include "stdafx.h"
 #include "ObjectMenuElementList.h"
 #include "ObjectMenuElementListScrollBar.h"
@@ -546,6 +550,8 @@ void ObjectMenuElementList::ScrollMove(int iMoveValueY)
 	}
 }
 
+// 하위 리스트 요소 교체
+// enFocusMenu : 교체할 항목
 void ObjectMenuElementList::ChangeElementList(FocusMenu enFocusMenu)
 {
 	int iSize;				// 요소 총 개수
@@ -576,6 +582,7 @@ void ObjectMenuElementList::ChangeElementList(FocusMenu enFocusMenu)
 			break;
 		}
 
+		// 요소 배치
 		SetElementList(ObjectElementArray, iSize, m_FocusScrollBar);
 
 		// 스크롤 위치로 목록 요소 재 배치
@@ -597,6 +604,7 @@ void ObjectMenuElementList::ChangeElementList(FocusMenu enFocusMenu)
 			break;
 		}
 
+		// 요소 배치
 		SetElementList(ObjectElementArray, iSize, m_FocusScrollBar);
 
 		// 스크롤 위치로 목록 요소 재 배치
@@ -618,6 +626,7 @@ void ObjectMenuElementList::ChangeElementList(FocusMenu enFocusMenu)
 			break;
 		}
 
+		// 요소 배치
 		SetElementList(ObjectElementArray, iSize, m_FocusScrollBar);
 
 		// 스크롤 위치로 목록 요소 재 배치
@@ -639,6 +648,7 @@ void ObjectMenuElementList::ChangeElementList(FocusMenu enFocusMenu)
 			break;
 		}
 
+		// 요소 배치
 		SetElementList(ObjectElementArray, iSize, m_FocusScrollBar);
 
 		// 스크롤 위치로 목록 요소 재 배치
@@ -660,6 +670,7 @@ void ObjectMenuElementList::ChangeElementList(FocusMenu enFocusMenu)
 			break;
 		}
 
+		// 요소 배치
 		SetElementList(ObjectElementArray, iSize, m_FocusScrollBar);
 
 		// 스크롤 위치로 목록 요소 재 배치
@@ -681,6 +692,7 @@ void ObjectMenuElementList::ChangeElementList(FocusMenu enFocusMenu)
 			break;
 		}
 
+		// 요소 배치
 		SetElementList(ObjectElementArray, iSize, m_FocusScrollBar);
 
 		// 스크롤 위치로 목록 요소 재 배치
@@ -694,10 +706,14 @@ void ObjectMenuElementList::ChangeElementList(FocusMenu enFocusMenu)
 	}
 }
 
+// 요소 배치
+// ObjectElementArray : 요소 배열
+// iSize : 배열 크기
+// SetScrollBar : 스크롤 바 포인터
 void ObjectMenuElementList::SetElementList(ObjectMenuElement** ObjectElementArray, int iSize,
 	ObjectMenuElementListScrollBar * SetScrollBar)
 {
-	int iCnt;
+	int iCnt;				// 반복문 카운트
 	int iLineFeedCnt;		// 메뉴 요소 줄바꿈
 	int iScrollBarSize;		// 메뉴 요소 세로축 사이즈에 비례한 스크롤 크기
 	int iScrollMoveValue;	// 스크롤 이동 값

@@ -1,3 +1,7 @@
+// 기명준
+// 메뉴 타이틀 바
+// 클릭시 상태 전달
+
 #pragma once
 #include "ObjectUI.h"
 

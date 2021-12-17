@@ -1,3 +1,7 @@
+// 기명준
+// 메뉴 하위 리스트
+// 선택한 항목의 요소들을 보여줌
+
 #pragma once
 #include "ObjectUI.h"
 
@@ -23,6 +27,8 @@ public:
 
 	void ScrollMove(int iMoveValueY);
 	void ChangeElementList(FocusMenu enFocusMenu);
+
+private:
 	void SetElementList(ObjectMenuElement** ObjectElementArray, int iSize,
 		ObjectMenuElementListScrollBar * SetScrollBar);
 
