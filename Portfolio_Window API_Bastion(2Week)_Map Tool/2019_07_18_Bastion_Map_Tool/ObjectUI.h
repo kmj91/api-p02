@@ -1,3 +1,6 @@
+// 기명준
+// 모든 UI 부모
+
 #pragma once
 #include "Object.h"
 

@@ -1,3 +1,6 @@
+// 기명준
+// 모든 UI 부모
+
 #include "stdafx.h"
 #include "ObjectUI.h"
 

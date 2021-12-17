@@ -1,3 +1,7 @@
+// 기명준
+// UI 메뉴 다이얼로그
+// 항목과 리스트로 구성
+
 #include "stdafx.h"
 #include "ObjectMenu.h"
 #include "ObjectMenuTitleBar.h"
@@ -97,7 +101,9 @@ ObjectMenu::~ObjectMenu()
 
 bool ObjectMenu::Action()
 {
+	// 교체할 항목이 있으면
 	if (m_ChangeMenu != FOCUS_MENU_EMPT) {
+		// 교체
 		m_FocusMenu = m_ChangeMenu;
 		// 리스트 요소 갱신
 		m_MenuElementList->ChangeElementList(m_FocusMenu);
@@ -107,6 +113,7 @@ bool ObjectMenu::Action()
 	return false;
 }
 
+// 메뉴 안에 포함된 모든 UI 오브젝트 Draw 처리
 void ObjectMenu::Draw()
 {
 	CList<ObjectUI*>::iterator iter;
@@ -129,6 +136,8 @@ void ObjectMenu::Draw()
 	}
 }
 
+// 메뉴 안에 포함된 UI 오브젝트들 Click 처리
+// 반환 값 : UI 영역 안이라면 true 바깥이라면 false
 bool ObjectMenu::Click()
 {
 	CList<ObjectUI*>::iterator iter;
@@ -144,6 +153,7 @@ bool ObjectMenu::Click()
 	iMouseX = g_iMouseX - g_CameraRect.left;
 	iMouseY = g_iMouseY - g_CameraRect.top;
 
+	// 메뉴의 사각형 범위 안이라면 UI 오브젝트 리스트를 돌면서 Click 처리
 	if (m_dLeft < iMouseX && iMouseX < m_dRight &&
 		m_dTop < iMouseY && iMouseY < m_dBottom) {
 
@@ -162,12 +172,15 @@ bool ObjectMenu::Click()
 	return false;
 }
 
+// UI 메뉴 이동 처리
+// 메뉴에 포함된 모든 UI 오브젝트들도 같이 이동 처리
 void ObjectMenu::Move(int iMoveValueX, int iMoveValueY)
 {
 	CList<ObjectUI*>::iterator iter;
 	CList<ObjectUI*>::iterator iter_end;
 	ObjectUI * ObjectTemp;
 
+	// 메뉴 이동
 	m_dX = m_dX - iMoveValueX;
 	m_dY = m_dY - iMoveValueY;
 	m_dLeft = m_dLeft - iMoveValueX;
@@ -175,6 +188,7 @@ void ObjectMenu::Move(int iMoveValueX, int iMoveValueY)
 	m_dRight = m_dRight - iMoveValueX;
 	m_dBottom = m_dBottom - iMoveValueY;
 
+	// 메뉴 안에 포함된 UI 오브젝트들도 이동
 	iter = m_MenuObjectList->begin();
 	iter_end = m_MenuObjectList->end();
 	while (iter != iter_end) {
@@ -184,6 +198,8 @@ void ObjectMenu::Move(int iMoveValueX, int iMoveValueY)
 	}
 }
 
+// 마우스 포인터가 UI 메뉴 영역 안에 있는지 검사
+// 반환 값 : UI 영역 안이라면 true 바깥이라면 false
 bool ObjectMenu::CheckOnMouse()
 {
 	int iMouseX;
