@@ -1,9 +1,14 @@
+// 기명준
+// 자료구조 리스트
+// 양방향 연결 리스트로 구현
+
 #pragma once
 
 template <typename T>
 class CList
 {
 public:
+	// 컨테이너
 	struct Node
 	{
 		T _data;
@@ -11,9 +16,9 @@ public:
 		Node *_Next;
 	};
 
+	// 이터레이터
 	class iterator
 	{
-	private:
 	public:
 		Node *_node;
 	public:
