@@ -1,3 +1,7 @@
+// 기명준
+// 메뉴 하위 리스트 오브젝트
+// 파괴할 수 있는 오브젝트
+
 #include "stdafx.h"
 #include "ObjectMenuBrokenElement.h"
 

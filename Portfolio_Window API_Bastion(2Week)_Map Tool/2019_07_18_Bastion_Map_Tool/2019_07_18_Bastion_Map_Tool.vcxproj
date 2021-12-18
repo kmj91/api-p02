@@ -151,7 +151,6 @@
     <ClInclude Include="CScreenDib.h" />
     <ClInclude Include="CSpriteDib.h" />
     <ClInclude Include="Object.h" />
-    <ClInclude Include="ObjectImage.h" />
     <ClInclude Include="ObjectMenuBrokenElement.h" />
     <ClInclude Include="ObjectMenuElement.h" />
     <ClInclude Include="ObjectMenuElementList.h" />
@@ -178,7 +177,6 @@
     <ClCompile Include="CScreenDib.cpp" />
     <ClCompile Include="CSpriteDib.cpp" />
     <ClCompile Include="Object.cpp" />
-    <ClCompile Include="ObjectImage.cpp" />
     <ClCompile Include="ObjectMenuBrokenElement.cpp" />
     <ClCompile Include="ObjectMenuElement.cpp" />
     <ClCompile Include="ObjectMenuElementList.cpp" />

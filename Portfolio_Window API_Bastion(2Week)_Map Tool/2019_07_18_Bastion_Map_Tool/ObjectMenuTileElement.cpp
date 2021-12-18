@@ -1,3 +1,7 @@
+// 기명준
+// 메뉴 하위 리스트 타일
+// 지우개, 1칸 짜리 타일, 4칸짜리 타일 종류가 있음
+
 #include "stdafx.h"
 #include "ObjectMenuTileElement.h"
 

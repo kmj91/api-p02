@@ -1,3 +1,6 @@
+// 기명준
+// 메뉴 하위 리스트 몬스터
+
 #pragma once
 #include "ObjectMenuElement.h"
 

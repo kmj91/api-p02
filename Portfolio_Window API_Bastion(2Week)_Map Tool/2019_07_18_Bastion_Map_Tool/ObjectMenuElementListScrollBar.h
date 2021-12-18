@@ -1,3 +1,6 @@
+// 기명준
+// 메뉴 하위 리스트 스크롤 바
+
 #pragma once
 #include "ObjectUI.h"
 

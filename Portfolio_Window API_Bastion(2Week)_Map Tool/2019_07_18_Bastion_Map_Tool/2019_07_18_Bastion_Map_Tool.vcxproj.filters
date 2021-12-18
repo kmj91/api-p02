@@ -39,9 +39,6 @@
     <ClInclude Include="CList.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
-    <ClInclude Include="ObjectImage.h">
-      <Filter>오브젝트</Filter>
-    </ClInclude>
     <ClInclude Include="ObjectSprite.h">
       <Filter>오브젝트</Filter>
     </ClInclude>
@@ -111,9 +108,6 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Object.cpp">
-      <Filter>오브젝트</Filter>
-    </ClCompile>
-    <ClCompile Include="ObjectImage.cpp">
       <Filter>오브젝트</Filter>
     </ClCompile>
     <ClCompile Include="ObjectSprite.cpp">

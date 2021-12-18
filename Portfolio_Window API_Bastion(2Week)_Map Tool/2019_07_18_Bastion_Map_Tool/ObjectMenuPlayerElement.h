@@ -1,3 +1,7 @@
+// 기명준
+// 메뉴 하위 리스트 플레이어
+// 플레이어 시작 위치
+
 #pragma once
 #include "ObjectMenuElement.h"
 

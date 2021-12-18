@@ -1,3 +1,7 @@
+// 기명준
+// 메뉴 하위 리스트 스테이지
+// 타일과 다른 큰 지형임
+
 #include "stdafx.h"
 #include "ObjectMenuStageElement.h"
 
