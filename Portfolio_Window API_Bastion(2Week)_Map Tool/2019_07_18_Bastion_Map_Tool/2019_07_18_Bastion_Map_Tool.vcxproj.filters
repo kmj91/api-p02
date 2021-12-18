@@ -39,12 +39,6 @@
     <ClInclude Include="CList.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
-    <ClInclude Include="ObjectSprite.h">
-      <Filter>오브젝트</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjectSpriteCompose.h">
-      <Filter>오브젝트</Filter>
-    </ClInclude>
     <ClInclude Include="ObjectMousePointer.h">
       <Filter>오브젝트</Filter>
     </ClInclude>
@@ -108,12 +102,6 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Object.cpp">
-      <Filter>오브젝트</Filter>
-    </ClCompile>
-    <ClCompile Include="ObjectSprite.cpp">
-      <Filter>오브젝트</Filter>
-    </ClCompile>
-    <ClCompile Include="ObjectSpriteCompose.cpp">
       <Filter>오브젝트</Filter>
     </ClCompile>
     <ClCompile Include="ObjectMousePointer.cpp">

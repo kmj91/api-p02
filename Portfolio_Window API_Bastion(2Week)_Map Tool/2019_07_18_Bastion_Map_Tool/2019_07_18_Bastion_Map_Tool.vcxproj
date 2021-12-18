@@ -161,8 +161,6 @@
     <ClInclude Include="ObjectMenuStageElement.h" />
     <ClInclude Include="ObjectMenuItem.h" />
     <ClInclude Include="ObjectMousePointer.h" />
-    <ClInclude Include="ObjectSprite.h" />
-    <ClInclude Include="ObjectSpriteCompose.h" />
     <ClInclude Include="ObjectStageMap.h" />
     <ClInclude Include="ObjectUnit.h" />
     <ClInclude Include="ObjectMenu.h" />
@@ -187,8 +185,6 @@
     <ClCompile Include="ObjectMenuStageElement.cpp" />
     <ClCompile Include="ObjectMenuItem.cpp" />
     <ClCompile Include="ObjectMousePointer.cpp" />
-    <ClCompile Include="ObjectSprite.cpp" />
-    <ClCompile Include="ObjectSpriteCompose.cpp" />
     <ClCompile Include="ObjectStageMap.cpp" />
     <ClCompile Include="ObjectUnit.cpp" />
     <ClCompile Include="ObjectMenu.cpp" />
