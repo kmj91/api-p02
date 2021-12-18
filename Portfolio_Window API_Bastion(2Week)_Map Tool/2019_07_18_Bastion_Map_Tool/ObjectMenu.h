@@ -22,7 +22,7 @@ public:
 	bool CheckOnMouse();		// 마우스가 올라와있나?
 
 private:
-	CList<ObjectUI *> *m_MenuObjectList;		// 메뉴 오브젝트 리스트, 메뉴 안에 들어가는 모든 UI 오브젝트들은 CList로 관리
+	CList<ObjectUI *> m_MenuObjectList;			// 메뉴 오브젝트 리스트, 메뉴 안에 들어가는 모든 UI 오브젝트들은 CList로 관리
 	FocusMenu m_FocusMenu;						// 선택된 메뉴
 	ObjectMenuElementList * m_MenuElementList;	// 메뉴 요소 리스트, 바로 접근할 수 있게 멤버 변수로 관리
 

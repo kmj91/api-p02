@@ -27,14 +27,12 @@ ObjectMenu::ObjectMenu(int iPosX, int iPosY)
 	m_dBottom = m_dTop + m_iHeight;
 	// 그리기 우선순위
 	m_iRenderPriority = df_RENDER_PRIORITY_LAST;
-	// 메뉴 오브젝트 리스트
-	m_MenuObjectList = new CList<ObjectUI *>;
 
 	//-------------------------------------
 	// 타이틀 바
 	//-------------------------------------
 	newObject = new ObjectMenuTitleBar(0xff69c3e2, m_dX, m_dY, m_iWidth, 40, 0.8);
-	m_MenuObjectList->push_back(newObject);
+	m_MenuObjectList.push_back(newObject);
 
 	//-------------------------------------
 	// 메뉴
@@ -45,28 +43,28 @@ ObjectMenu::ObjectMenu(int iPosX, int iPosY)
 
 	// 타일 메뉴
 	newObject = new ObjectMenuItem(m_dX + 5, m_dY + 45, df_SPRITE_MENU_TILE, FOCUS_MENU_TILE, this);
-	m_MenuObjectList->push_back(newObject);
+	m_MenuObjectList.push_back(newObject);
 	// 스테이지 메뉴
 	newObject = new ObjectMenuItem(m_dX + 60, m_dY + 45, df_SPRITE_MENU_STAGE, FOCUS_MENU_STAGE, this);
-	m_MenuObjectList->push_back(newObject);
+	m_MenuObjectList.push_back(newObject);
 	// 플레이어 메뉴
 	newObject = new ObjectMenuItem(m_dX + 115, m_dY + 45, df_SPRITE_MENU_PLAYER, FOCUS_MENU_PLAYER, this);
-	m_MenuObjectList->push_back(newObject);
+	m_MenuObjectList.push_back(newObject);
 	// 물체 메뉴
 	newObject = new ObjectMenuItem(m_dX + 170, m_dY + 45, df_SPRITE_MENU_OBJECT, FOCUS_MENU_OBJECT, this);
-	m_MenuObjectList->push_back(newObject);
+	m_MenuObjectList.push_back(newObject);
 	// 부셔지는 물체 메뉴
 	newObject = new ObjectMenuItem(m_dX + 225, m_dY + 45, df_SPRITE_MENU_BROKEN, FOCUS_MENU_BROKEN, this);
-	m_MenuObjectList->push_back(newObject);
+	m_MenuObjectList.push_back(newObject);
 	// 적 메뉴
 	newObject = new ObjectMenuItem(m_dX + 280, m_dY + 45, df_SPRITE_MENU_ENEMY, FOCUS_MENU_ENEMY, this);
-	m_MenuObjectList->push_back(newObject);
+	m_MenuObjectList.push_back(newObject);
 
 	//-------------------------------------
 	// 메뉴 요소 목록
 	//-------------------------------------
 	m_MenuElementList = new ObjectMenuElementList(m_dX, m_dY + 80, m_iWidth, m_iHeight - 80);
-	m_MenuObjectList->push_back(m_MenuElementList);
+	m_MenuObjectList.push_back(m_MenuElementList);
 	g_TestObject = m_MenuElementList;
 
 	// 리스트 요소 갱신
@@ -83,15 +81,13 @@ ObjectMenu::~ObjectMenu()
 	//--------------------------------------
 	// 메모리 정리
 	//--------------------------------------
-	iter = m_MenuObjectList->begin();
-	iter_end = m_MenuObjectList->end();
+	iter = m_MenuObjectList.begin();
+	iter_end = m_MenuObjectList.end();
 	while (iter != iter_end) {
 		ObjectTemp = *iter;
-		iter = m_MenuObjectList->erase(iter);
+		iter = m_MenuObjectList.erase(iter);
 		delete ObjectTemp;
 	}
-
-	delete m_MenuObjectList;
 }
 
 bool ObjectMenu::Action()
@@ -126,8 +122,8 @@ void ObjectMenu::Draw()
 	g_cSprite->DrawBackground(0xffffff, m_dX, m_dY, m_iWidth, m_iHeight, g_bypDest, g_iDestWidth, g_iDestHeight, g_iDestPitch, 0.5, false, true);
 	
 	// 메뉴 내부 오브젝트 처리
-	iter = m_MenuObjectList->begin();
-	iter_end = m_MenuObjectList->end();
+	iter = m_MenuObjectList.begin();
+	iter_end = m_MenuObjectList.end();
 	while (iter != iter_end) {
 		ObjectTemp = *iter;
 		if (ObjectTemp->Action()) {
@@ -159,8 +155,8 @@ bool ObjectMenu::Click()
 	if (m_dLeft < iMouseX && iMouseX < m_dRight &&
 		m_dTop < iMouseY && iMouseY < m_dBottom) {
 
-		iter = m_MenuObjectList->rbegin();
-		iter_end = m_MenuObjectList->head();
+		iter = m_MenuObjectList.rbegin();
+		iter_end = m_MenuObjectList.head();
 		while (iter != iter_end) {
 			ObjectTemp = *iter;
 			if (ObjectTemp->Click()) {
@@ -191,8 +187,8 @@ void ObjectMenu::Move(int iMoveValueX, int iMoveValueY)
 	m_dBottom = m_dBottom - iMoveValueY;
 
 	// 메뉴 안에 포함된 UI 오브젝트들도 이동
-	iter = m_MenuObjectList->begin();
-	iter_end = m_MenuObjectList->end();
+	iter = m_MenuObjectList.begin();
+	iter_end = m_MenuObjectList.end();
 	while (iter != iter_end) {
 		ObjectTemp = *iter;
 		ObjectTemp->Move(iMoveValueX, iMoveValueY);
