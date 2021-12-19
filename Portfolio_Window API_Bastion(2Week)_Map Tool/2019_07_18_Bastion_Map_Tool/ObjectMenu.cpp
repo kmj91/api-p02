@@ -76,7 +76,6 @@ ObjectMenu::~ObjectMenu()
 {
 	CList<ObjectUI*>::iterator iter;
 	CList<ObjectUI*>::iterator iter_end;
-	ObjectUI * ObjectTemp;
 
 	//--------------------------------------
 	// 메모리 정리
@@ -84,9 +83,8 @@ ObjectMenu::~ObjectMenu()
 	iter = m_MenuObjectList.begin();
 	iter_end = m_MenuObjectList.end();
 	while (iter != iter_end) {
-		ObjectTemp = *iter;
+		delete *iter;
 		iter = m_MenuObjectList.erase(iter);
-		delete ObjectTemp;
 	}
 }
 
@@ -108,6 +106,21 @@ bool ObjectMenu::Action()
 		m_ChangeMenu = FOCUS_MENU_EMPT;
 	}
 
+	CList<ObjectUI*>::iterator iter;
+	CList<ObjectUI*>::iterator iter_end;
+
+	// 메뉴 내부 오브젝트 처리
+	iter = m_MenuObjectList.begin();
+	iter_end = m_MenuObjectList.end();
+	while (iter != iter_end) {
+		if ((*iter)->Action()) {
+			delete *iter;
+			iter = m_MenuObjectList.erase(iter);
+			continue;
+		}
+		++iter;
+	}
+
 	return false;
 }
 
@@ -116,7 +129,6 @@ void ObjectMenu::Draw()
 {
 	CList<ObjectUI*>::iterator iter;
 	CList<ObjectUI*>::iterator iter_end;
-	ObjectUI * ObjectTemp;
 
 	// 메뉴 영역
 	g_cSprite->DrawBackground(0xffffff, m_dX, m_dY, m_iWidth, m_iHeight, g_bypDest, g_iDestWidth, g_iDestHeight, g_iDestPitch, 0.5, false, true);
@@ -125,11 +137,7 @@ void ObjectMenu::Draw()
 	iter = m_MenuObjectList.begin();
 	iter_end = m_MenuObjectList.end();
 	while (iter != iter_end) {
-		ObjectTemp = *iter;
-		if (ObjectTemp->Action()) {
-			delete ObjectTemp;
-		}
-		ObjectTemp->Draw();
+		(*iter)->Draw();
 		++iter;
 	}
 }
@@ -140,7 +148,6 @@ bool ObjectMenu::Click()
 {
 	CList<ObjectUI*>::iterator iter;
 	CList<ObjectUI*>::iterator iter_end;
-	ObjectUI * ObjectTemp;
 	int iMouseX;
 	int iMouseY;
 
@@ -158,8 +165,7 @@ bool ObjectMenu::Click()
 		iter = m_MenuObjectList.rbegin();
 		iter_end = m_MenuObjectList.head();
 		while (iter != iter_end) {
-			ObjectTemp = *iter;
-			if (ObjectTemp->Click()) {
+			if ((*iter)->Click()) {
 				return true;
 			}
 			--iter;
@@ -176,7 +182,6 @@ void ObjectMenu::Move(int iMoveValueX, int iMoveValueY)
 {
 	CList<ObjectUI*>::iterator iter;
 	CList<ObjectUI*>::iterator iter_end;
-	ObjectUI * ObjectTemp;
 
 	// 메뉴 이동
 	m_dX = m_dX - iMoveValueX;
@@ -190,8 +195,7 @@ void ObjectMenu::Move(int iMoveValueX, int iMoveValueY)
 	iter = m_MenuObjectList.begin();
 	iter_end = m_MenuObjectList.end();
 	while (iter != iter_end) {
-		ObjectTemp = *iter;
-		ObjectTemp->Move(iMoveValueX, iMoveValueY);
+		(*iter)->Move(iMoveValueX, iMoveValueY);
 		++iter;
 	}
 }
