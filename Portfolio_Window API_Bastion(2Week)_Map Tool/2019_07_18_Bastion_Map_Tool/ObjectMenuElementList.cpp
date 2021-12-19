@@ -405,6 +405,24 @@ ObjectMenuElementList::~ObjectMenuElementList()
 
 bool ObjectMenuElementList::Action()
 {
+	CList<ObjectUI*>::iterator iter;
+	CList<ObjectUI*>::iterator iter_end;
+
+	// 스크롤 바
+	m_FocusScrollBar->Action();
+
+	// 스크롤 뷰 내부 오브젝트 처리
+	iter = m_MenuElementObjectList.begin();
+	iter_end = m_MenuElementObjectList.end();
+	while (iter != iter_end) {
+		if ((*iter)->Action()) {
+			delete *iter;
+			iter = m_MenuElementObjectList.erase(iter);
+			continue;
+		}
+		++iter;
+	}
+
 	return false;
 }
 
@@ -412,34 +430,29 @@ void ObjectMenuElementList::Draw()
 {
 	CList<ObjectUI*>::iterator iter;
 	CList<ObjectUI*>::iterator iter_end;
-	ObjectUI * ObjectTemp;
-
+	ObjectUI * pObjectUI;
 	
 	// 스크롤 바
-	m_FocusScrollBar->Action();
 	m_FocusScrollBar->Draw();
 
-
-	// 메뉴 내부 오브젝트 처리
+	// 스크롤 뷰 내부 오브젝트 그리기
 	iter = m_MenuElementObjectList.begin();
 	iter_end = m_MenuElementObjectList.end();
 	while (iter != iter_end) {
-		ObjectTemp = *iter;
+		pObjectUI = *iter;
 
-		// 메뉴 리스트 스크롤 벗어나면 출력 ㄴㄴ
-		if (ObjectTemp->m_dBottom < m_iScrollTop) {
+		// 오브젝트의 Bottom이 스크롤 뷰의 Top 작다면 Draw() 호출 X
+		if (pObjectUI->m_dBottom < m_iScrollTop) {
 			++iter;
 			continue;
 		}
-		else if (ObjectTemp->m_dTop > m_iScrollBottom) {
+		// 오브젝트의 Top이 스크롤 뷰의 Bottom 크다면 Draw() 호출 X
+		else if (pObjectUI->m_dTop > m_iScrollBottom) {
 			++iter;
 			continue;
 		}
-
-		if (ObjectTemp->Action()) {
-			delete ObjectTemp;
-		}
-		ObjectTemp->Draw();
+		// 그리기
+		pObjectUI->Draw();
 		++iter;
 	}
 }
@@ -448,7 +461,7 @@ bool ObjectMenuElementList::Click()
 {
 	CList<ObjectUI*>::iterator iter;
 	CList<ObjectUI*>::iterator iter_end;
-	ObjectUI * ObjectTemp;
+	ObjectUI * pObjectUI;
 	int iMouseX;
 	int iMouseY;
 
@@ -467,8 +480,8 @@ bool ObjectMenuElementList::Click()
 		iter = m_MenuElementObjectList.rbegin();
 		iter_end = m_MenuElementObjectList.head();
 		while (iter != iter_end) {
-			ObjectTemp = *iter;
-			if (ObjectTemp->Click()) {
+			pObjectUI = *iter;
+			if (pObjectUI->Click()) {
 				return true;
 			}
 			--iter;
