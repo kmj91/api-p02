@@ -129,16 +129,22 @@ BOOL CSpriteDib::LoadDibSprite(int iSpriteIndex, const wchar_t * szFileName, int
 	// 임시 버퍼에 읽은 뒤에 뒤집으면서 복사한다.
 	//-----------------------------------------------------------------
 	BYTE *buffer = new BYTE[iImageSize];
-	BYTE *tempBuffer;
-	BYTE *tempSprite = m_stpSprite[iSpriteIndex].bypImage;
+	BYTE *readLine;
+	BYTE *copySprite = m_stpSprite[iSpriteIndex].bypImage;
+	// 픽셀 데이터를 전부 읽어옵니다.
 	fread(buffer, iImageSize, 1, fp);
-	tempBuffer = buffer +(iPitch * (stInfoHeader.biHeight - 1));
+	// 픽셀 데이터 세로 길이에 -1을 줘서 마지막 시작 줄 포인터 위치를 구합니다.
+	readLine = buffer + (iPitch * (stInfoHeader.biHeight - 1));
 
 	for (iCount = 0; iCount < stInfoHeader.biHeight; iCount++) {
 		//memcpy(tempSprite, tempBuffer, stInfoHeader.biWidth * 4);
-		memcpy(tempSprite, tempBuffer, stInfoHeader.biWidth * iColorByte);
-		tempBuffer = tempBuffer - iPitch;
-		tempSprite = tempSprite + iPitch;
+		// 픽셀 데이터 한 줄 복사
+		memcpy(copySprite, readLine, stInfoHeader.biWidth * iColorByte);
+		// 다음 줄로 이동
+		// 읽어들일 픽셀 데이터 라인은 뒤에서부터
+		readLine = readLine - iPitch;
+		// 저장할 픽셀 데이터는 앞에서 부터
+		copySprite = copySprite + iPitch;
 	}
 
 	delete[] buffer;

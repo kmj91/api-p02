@@ -15,7 +15,7 @@ public:
 	//
 	// 스프라이트 이미지와 사이즈 정보를 가짐.
 	// **************************************************************** 
-	typedef struct st_SPRITE
+	struct st_SPRITE
 	{
 		BYTE	*bypImage;				// 스프라이트 이미지 포인터.
 		int		iWidth;					// Widht
@@ -25,7 +25,7 @@ public:
 		int		iCenterPointX;			// 중점 X
 		int		iCenterPointY;			// 중점 Y
 		int		iColorByte;				// 이미지가 한픽셀을 표현하는데 필요한 바이트 수 (비트 컬러 ex.24비트 컬러 , 32비트 컬러)
-	}st_SPRITE;
+	};
 	////////////////////////////////////////////////////////////////////
 	// 생성자, 파괴자.
 	//
