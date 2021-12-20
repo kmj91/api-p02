@@ -29,7 +29,7 @@ public:
 	void ChangeElementList(FocusMenu enFocusMenu);
 
 private:
-	void SetElementList(ObjectMenuElement** ObjectElementArray, int iSize,
+	void InitLayout(ObjectMenuElement** ObjectElementArray, int iSize,
 		ObjectMenuElementListScrollBar * SetScrollBar);
 
 private:

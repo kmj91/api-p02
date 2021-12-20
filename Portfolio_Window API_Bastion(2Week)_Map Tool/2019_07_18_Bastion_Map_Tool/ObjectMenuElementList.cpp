@@ -577,8 +577,8 @@ void ObjectMenuElementList::ChangeElementList(FocusMenu enFocusMenu)
 			break;
 		}
 
-		// 요소 배치
-		SetElementList(ObjectElementArray, iSize, m_FocusScrollBar);
+		// 레이아웃 초기화
+		InitLayout(ObjectElementArray, iSize, m_FocusScrollBar);
 
 		// 스크롤 위치로 목록 요소 재 배치
 		ScrollMove(m_iScrollTop - m_FocusScrollBar->m_dScrollBarTop);
@@ -599,8 +599,8 @@ void ObjectMenuElementList::ChangeElementList(FocusMenu enFocusMenu)
 			break;
 		}
 
-		// 요소 배치
-		SetElementList(ObjectElementArray, iSize, m_FocusScrollBar);
+		// 레이아웃 초기화
+		InitLayout(ObjectElementArray, iSize, m_FocusScrollBar);
 
 		// 스크롤 위치로 목록 요소 재 배치
 		ScrollMove(m_iScrollTop - m_FocusScrollBar->m_dScrollBarTop);
@@ -621,8 +621,8 @@ void ObjectMenuElementList::ChangeElementList(FocusMenu enFocusMenu)
 			break;
 		}
 
-		// 요소 배치
-		SetElementList(ObjectElementArray, iSize, m_FocusScrollBar);
+		// 레이아웃 초기화
+		InitLayout(ObjectElementArray, iSize, m_FocusScrollBar);
 
 		// 스크롤 위치로 목록 요소 재 배치
 		ScrollMove(m_iScrollTop - m_FocusScrollBar->m_dScrollBarTop);
@@ -643,8 +643,8 @@ void ObjectMenuElementList::ChangeElementList(FocusMenu enFocusMenu)
 			break;
 		}
 
-		// 요소 배치
-		SetElementList(ObjectElementArray, iSize, m_FocusScrollBar);
+		// 레이아웃 초기화
+		InitLayout(ObjectElementArray, iSize, m_FocusScrollBar);
 
 		// 스크롤 위치로 목록 요소 재 배치
 		ScrollMove(m_iScrollTop - m_FocusScrollBar->m_dScrollBarTop);
@@ -665,8 +665,8 @@ void ObjectMenuElementList::ChangeElementList(FocusMenu enFocusMenu)
 			break;
 		}
 
-		// 요소 배치
-		SetElementList(ObjectElementArray, iSize, m_FocusScrollBar);
+		// 레이아웃 초기화
+		InitLayout(ObjectElementArray, iSize, m_FocusScrollBar);
 
 		// 스크롤 위치로 목록 요소 재 배치
 		ScrollMove(m_iScrollTop - m_FocusScrollBar->m_dScrollBarTop);
@@ -687,8 +687,8 @@ void ObjectMenuElementList::ChangeElementList(FocusMenu enFocusMenu)
 			break;
 		}
 
-		// 요소 배치
-		SetElementList(ObjectElementArray, iSize, m_FocusScrollBar);
+		// 레이아웃 초기화
+		InitLayout(ObjectElementArray, iSize, m_FocusScrollBar);
 
 		// 스크롤 위치로 목록 요소 재 배치
 		ScrollMove(m_iScrollTop - m_FocusScrollBar->m_dScrollBarTop);
@@ -701,11 +701,11 @@ void ObjectMenuElementList::ChangeElementList(FocusMenu enFocusMenu)
 	}
 }
 
-// 요소 배치
+// 레이아웃 초기화
 // ObjectElementArray : 요소 배열
 // iSize : 배열 크기
 // SetScrollBar : 스크롤 바 포인터
-void ObjectMenuElementList::SetElementList(ObjectMenuElement** ObjectElementArray, int iSize,
+void ObjectMenuElementList::InitLayout(ObjectMenuElement** ObjectElementArray, int iSize,
 	ObjectMenuElementListScrollBar * SetScrollBar)
 {
 	int iCnt;				// 반복문 카운트
