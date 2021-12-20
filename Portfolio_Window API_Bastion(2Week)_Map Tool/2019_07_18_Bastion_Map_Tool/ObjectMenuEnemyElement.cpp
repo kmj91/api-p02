@@ -53,13 +53,8 @@ bool ObjectMenuEnemyElement::Action()
 
 void ObjectMenuEnemyElement::Draw()
 {
-	int iPosY;
-	RECT SpriteCutOutRect;
-	SpriteCutOutRect.left = 0;
-	SpriteCutOutRect.top = 0;
-	SpriteCutOutRect.right = 0;
-	SpriteCutOutRect.bottom = 0;
-	iPosY = m_dY;
+	int iPosY = m_dY;							// 오브젝트 y포지션 값
+	RECT SpriteCutOutRect = { 0, 0, 0, 0 };		// 원본에서 잘라내기할 정도
 
 	//--------------------------------------
 	// 목록 요소는 메뉴 사이즈에 종속적임
@@ -82,7 +77,7 @@ void ObjectMenuEnemyElement::Draw()
 	if (m_dBottom > *m_iScrollBottomPtr) {
 		SpriteCutOutRect.bottom = m_dBottom - *m_iScrollBottomPtr;
 	}
-
+	// 이미지를 잘라내며 출력
 	g_cSprite->DrawCutOutImage(m_iSpriteIndex, m_dX, iPosY, g_bypDest, g_iDestWidth, g_iDestHeight, g_iDestPitch, SpriteCutOutRect, false);
 }
 
