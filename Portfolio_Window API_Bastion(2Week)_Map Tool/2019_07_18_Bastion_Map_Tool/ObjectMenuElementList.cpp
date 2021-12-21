@@ -743,9 +743,9 @@ void ObjectMenuElementList::InitLayout(ObjectMenuElement** ObjectElementArray, i
 			++iLineFeedCnt;
 		}
 
-		// 아이콘 위치 좌표 설정
+		// 아이콘 위치 좌표 설정 (부모 좌표 + 계산된 좌표)
 		ObjectElementArray[iCnt]->SetPosition(m_dX + iPosX, m_dY + iPosY);
-		// 다음 아이콘 좌표로 이동
+		// 다음 아이콘 시작 좌표 계산
 		iPosX = iPosX + iWidth;
 		// 화면에 출력할 리스트에 저장
 		m_MenuElementObjectList.push_back(ObjectElementArray[iCnt]);
