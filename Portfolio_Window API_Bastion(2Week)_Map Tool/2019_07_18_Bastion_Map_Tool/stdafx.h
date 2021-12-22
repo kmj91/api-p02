@@ -20,6 +20,7 @@
 
 // 여기서 프로그램에 필요한 추가 헤더를 참조합니다.
 
+#include <vector>
 
 #include "CList.h"
 #include "CScreenDib.h"
@@ -29,7 +30,7 @@
 #include "ObjectMousePointer.h"
 #include "ObjectUnit.h"
 
-
+using namespace std;
 
 
 // 디파인
@@ -394,10 +395,17 @@ enum FocusMenu {
 	FOCUS_MENU_ENEMY
 };
 
+struct stTile
+{
+	double dPosX;
+	double dPosY;
+};
+
 
 // extern
 extern CSpriteDib *g_cSprite;					// 스프라이트
 extern CList<Object *> *g_ObjectList;			// WinMain 오브젝트 리스트
+extern vector<stTile*> g_vecTile;				// 타일 좌표
 extern ObjectUnit *g_Player;					// 플레이어
 extern BYTE *g_bypDest;							// 스크린 버퍼
 extern int g_iDestWidth;						// 스크린 가로 길이

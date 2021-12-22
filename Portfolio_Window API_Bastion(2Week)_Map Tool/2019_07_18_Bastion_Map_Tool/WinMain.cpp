@@ -56,6 +56,7 @@ enum enAction {
 // extern 변수
 CSpriteDib *g_cSprite;					// 스프라이트
 CList<Object *> *g_ObjectList;			// WinMain 오브젝트 리스트
+vector<stTile*> g_vecTile;				// 타일 좌표
 ObjectUnit *g_Player = NULL;			// 플레이어
 BYTE *g_bypDest;						// 스크린 버퍼
 int g_iDestWidth;						// 스크린 가로 길이
@@ -1033,12 +1034,14 @@ LRESULT CALLBACK    TriggerProc(HWND, UINT, WPARAM, LPARAM);			// 트리거 다이얼�
 LRESULT CALLBACK    CreateTriggerProc(HWND, UINT, WPARAM, LPARAM);		// 트리거 다이얼로그
 void Update();					// 업데이트
 void LoadSprite();				// 스프라이트 로드
+void InitTile();				// 타일 초기화
 void KeyProcess();				// 키 처리
 void InsertionSort();			// 삽입 정렬
 void SaveProcess();				// 세이브 처리
 void LoadProcess();				// 불러오기 처리
 void UTF8toUTF16(const char *szText, WCHAR *szBuff, int iBuffLen);
 void UpdateProperties();
+bool CheckTile(double dTileY, double dTileX);
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	_In_opt_ HINSTANCE hPrevInstance,
@@ -1057,6 +1060,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	// 스프라이트 로드
 	LoadSprite();
+	// 타일 초기화
+	InitTile();
 
 	//출력 버퍼 포인터 및 정보 얻음
 	g_bypDest = g_ScreenDib->GetDibBuffer();
@@ -1172,7 +1177,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	CList<Object*>::iterator iter;
 	CList<Object*>::iterator iter_end;
-	Object * ObjectTemp;
 
 	//--------------------------------------
 	// 메모리 정리
@@ -1180,14 +1184,17 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	iter = g_ObjectList->begin();
 	iter_end = g_ObjectList->end();
 	while (iter != iter_end) {
-		ObjectTemp = *iter;
+		delete *iter;
 		iter = g_ObjectList->erase(iter);
-		delete ObjectTemp;
 	}
 
 	delete g_ObjectList;
 	delete g_cSprite;
 	delete g_ScreenDib;
+
+	for (auto& pTile : g_vecTile)
+		delete pTile;
+	g_vecTile.clear();
 
 
 	return (int)msg.wParam;
@@ -1308,15 +1315,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				if (iTileBlockX % 2) {
 					iTileBlockY = iTileBlockY + 1;
 				}
-				else {
-
-				}
 			}
 			else {
-				if (iTileBlockX % 2) {
-
-				}
-				else {
+				if (!(iTileBlockX % 2)) {
 					iTileBlockY = iTileBlockY + 1;
 				}
 			}
@@ -1337,15 +1338,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				if (iTileBlockX % 2) {
 					iTileBlockY = iTileBlockY + 1;
 				}
-				else {
-
-				}
 			}
 			else {
-				if (iTileBlockX % 2) {
-
-				}
-				else {
+				if (!(iTileBlockX % 2)) {
 					iTileBlockY = iTileBlockY + 1;
 				}
 			}
@@ -2053,6 +2048,32 @@ void LoadSprite()
 
 	// 지우개 아이콘
 	g_cSprite->LoadDibSprite(df_SPRITE_ERASE, L"image\\Erase.bmp", 0, 0);
+}
+
+
+//--------------------------------------
+// 타일 초기화
+//--------------------------------------
+void InitTile()
+{
+	stTile* pTile = nullptr;
+	int iTileX = g_iMapWidth / 100;
+	int iTileY = g_iMapHeight / 50;
+
+	g_vecTile.reserve(iTileX * iTileY);
+
+	for (int i = 0; i < iTileY; ++i)
+	{
+		for (int j = 0; j < iTileX; ++j)
+		{
+			pTile = new stTile;
+			pTile->dPosX = (j * 100) + ((i % 2)+1) * 50;
+			pTile->dPosY = (double)25 * i;
+			g_vecTile.emplace_back(pTile);
+		}
+	}
+
+	return;
 }
 
 
@@ -4171,4 +4192,43 @@ void UpdateProperties()
 	}
 
 	
+}
+
+
+bool CheckTile(double dTileY, double dTileX)
+{
+	// y = ax + b;
+	// a
+	float fa[4] =
+	{
+		(TILECY * 0.5f) / (TILECX * 0.5f),
+		-(TILECY * 0.5f) / (TILECX * 0.5f),
+		(TILECY * 0.5f) / (TILECX * 0.5f),
+		-(TILECY * 0.5f) / (TILECX * 0.5f)
+	};
+	// 타일 꼭지점
+	_vec3 vPoint[4] =
+	{
+		{ _fTileX, _fTileY + (TILECY * 0.5f), 0.f },
+		{ _fTileX + (TILECX * 0.5f), _fTileY, 0.f },
+		{ _fTileX, _fTileY - (TILECY * 0.5f), 0.f },
+		{ _fTileX - (TILECX * 0.5f), _fTileY, 0.f }
+	};
+	// y = ax + b -> b = y - ax;
+	// b
+	float fb[4] =
+	{
+		vPoint[0].y - fa[0] * vPoint[0].x,
+		vPoint[1].y - fa[1] * vPoint[1].x,
+		vPoint[2].y - fa[2] * vPoint[2].x,
+		vPoint[3].y - fa[3] * vPoint[3].x,
+	};
+	// 0 = ax + b - y;
+	if (0 < fa[0] * _iX + fb[0] - _iY &&
+		0 < fa[1] * _iX + fb[1] - _iY &&
+		0 > fa[2] * _iX + fb[2] - _iY &&
+		0 > fa[3] * _iX + fb[3] - _iY)
+		return true;
+
+	return false;
 }
