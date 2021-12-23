@@ -1349,32 +1349,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			break;
 
 		case MOUSE_STATE_ERASE:	// 지우개
-			iTileBlockX = g_iMouseX / df_TILE_WIDTH;
-			iTileBlockY = g_iMouseY / df_TILE_HEIGHT;
-
-			//--------------------------------------
-			// 홀수짝수 구분
-			// 홀수 번째 위치가 다름
-			//--------------------------------------
-			if (iTileBlockY % 2) {
-				if (iTileBlockX % 2) {
-					iTileBlockY = iTileBlockY + 1;
-				}
-				else {
-
+			// 클릭한 타일 좌표 검사
+			for (auto& pTile : g_vecBigTile)
+			{
+				if (CheckBigTile(pTile->dPosY, pTile->dPosX))
+				{
+					g_MousePointer->m_dX = pTile->dPosX;
+					g_MousePointer->m_dY = pTile->dPosY;
+					break;
 				}
 			}
-			else {
-				if (iTileBlockX % 2) {
-
-				}
-				else {
-					iTileBlockY = iTileBlockY + 1;
-				}
-			}
-
-			g_MousePointer->m_dX = iTileBlockX * df_TILE_WIDTH;
-			g_MousePointer->m_dY = iTileBlockY * df_TILE_HEIGHT;
 
 			break;
 		default:
@@ -1653,8 +1637,8 @@ void Update()
 	// 타일 격자
 	if (g_bTileOption) {
 		dCntX = 0 - g_CameraRect.left;
-		dCntY = df_TILE_HEIGHT - g_CameraRect.top;
-		dCntXX = df_TILE_WIDTH - g_CameraRect.left;
+		dCntY = df_TILE_SMALL_HEIGHT - g_CameraRect.top;
+		dCntXX = df_TILE_SMALL_WIDTH - g_CameraRect.left;
 		dCntYY = 0 - g_CameraRect.top;
 		bFlag = false;
 		// 기울기
@@ -1665,11 +1649,11 @@ void Update()
 			MoveToEx(hdcCopy, dCntX, dCntY, NULL);
 			LineTo(hdcCopy, dCntXX, dCntYY);
 
-			dCntY = dCntY + df_TILE_HEIGHT;
-			dCntXX = dCntXX + df_TILE_WIDTH;
+			dCntY = dCntY + df_TILE_SMALL_HEIGHT;
+			dCntXX = dCntXX + df_TILE_SMALL_WIDTH;
 		}
 
-		dCntY = dCntY - df_TILE_HEIGHT;
+		dCntY = dCntY - df_TILE_SMALL_HEIGHT;
 		dCntYY = g_iMapHeight;
 		// 직선 방정식
 		// y - y1 = a(x - x1)
@@ -1680,8 +1664,8 @@ void Update()
 			MoveToEx(hdcCopy, dCntX, dCntY, NULL);
 			LineTo(hdcCopy, dCntXX, dCntYY);
 
-			dCntY = dCntY - df_TILE_HEIGHT;
-			dCntXX = dCntXX + df_TILE_WIDTH;
+			dCntY = dCntY - df_TILE_SMALL_HEIGHT;
+			dCntXX = dCntXX + df_TILE_SMALL_WIDTH;
 		}
 	}
 
@@ -4204,19 +4188,19 @@ bool CheckTile(double dTileY, double dTileX)
 	// m
 	double dm[4] =
 	{
-		(50 * 0.5f) / (100 * 0.5f),
-		-(50 * 0.5f) / (100 * 0.5f),
-		(50 * 0.5f) / (100 * 0.5f),
-		-(50 * 0.5f) / (100 * 0.5f)
+		(df_TILE_SMALL_HEIGHT * 0.5f) / (df_TILE_SMALL_WIDTH * 0.5f),
+		-(df_TILE_SMALL_HEIGHT * 0.5f) / (df_TILE_SMALL_WIDTH * 0.5f),
+		(df_TILE_SMALL_HEIGHT * 0.5f) / (df_TILE_SMALL_WIDTH * 0.5f),
+		-(df_TILE_SMALL_HEIGHT * 0.5f) / (df_TILE_SMALL_WIDTH * 0.5f)
 	};
 
 	// 타일 꼭지점
 	stVec2 vPoint[4] =
 	{
-		{ dTileX, dTileY + (50 * 0.5f) },
-		{ dTileX + (100 * 0.5f), dTileY },
-		{ dTileX, dTileY - (50 * 0.5f) },
-		{ dTileX - (100 * 0.5f), dTileY }
+		{ dTileX, dTileY + (df_TILE_SMALL_HEIGHT * 0.5f) },
+		{ dTileX + (df_TILE_SMALL_WIDTH * 0.5f), dTileY },
+		{ dTileX, dTileY - (df_TILE_SMALL_HEIGHT * 0.5f) },
+		{ dTileX - (df_TILE_SMALL_WIDTH * 0.5f), dTileY }
 	};
 	// y = mx + n -> n = y - mx;
 	// n
@@ -4243,19 +4227,19 @@ bool CheckBigTile(double dTileY, double dTileX)
 	// m
 	double dm[4] =
 	{
-		(100 * 0.5f) / (200 * 0.5f),
-		-(100 * 0.5f) / (200 * 0.5f),
-		(100 * 0.5f) / (200 * 0.5f),
-		-(100 * 0.5f) / (200 * 0.5f)
+		(df_TILE_HEIGHT * 0.5f) / (df_TILE_WIDTH * 0.5f),
+		-(df_TILE_HEIGHT * 0.5f) / (df_TILE_WIDTH * 0.5f),
+		(df_TILE_HEIGHT * 0.5f) / (df_TILE_WIDTH * 0.5f),
+		-(df_TILE_HEIGHT * 0.5f) / (df_TILE_WIDTH * 0.5f)
 	};
 
 	// 타일 꼭지점
 	stVec2 vPoint[4] =
 	{
-		{ dTileX, dTileY + (100 * 0.5f) },
-		{ dTileX + (200 * 0.5f), dTileY },
-		{ dTileX, dTileY - (100 * 0.5f) },
-		{ dTileX - (200 * 0.5f), dTileY }
+		{ dTileX, dTileY + (df_TILE_HEIGHT * 0.5f) },
+		{ dTileX + (df_TILE_WIDTH * 0.5f), dTileY },
+		{ dTileX, dTileY - (df_TILE_HEIGHT * 0.5f) },
+		{ dTileX - (df_TILE_WIDTH * 0.5f), dTileY }
 	};
 	// y = mx + n -> n = y - mx;
 	// n

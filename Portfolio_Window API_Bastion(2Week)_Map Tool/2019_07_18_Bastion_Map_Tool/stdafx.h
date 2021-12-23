@@ -43,10 +43,10 @@ using namespace std;
 #define df_MAP_TOP								0
 #define df_MAP_RIGHT							2000
 #define df_MAP_BOTTOM							2000
-#define df_TILE_WIDTH							100
-#define df_TILE_HEIGHT							50
-#define df_TILE_SMALL_WIDTH						50
-#define df_TILE_SMALL_HEIGHT					25
+#define df_TILE_WIDTH							200
+#define df_TILE_HEIGHT							100
+#define df_TILE_SMALL_WIDTH						100
+#define df_TILE_SMALL_HEIGHT					50
 #define df_TILE_PROPERTIES_SIZE					25
 #define df_TILE_PROPERTIES_X					8
 #define df_TILE_PROPERTIES_Y					8
