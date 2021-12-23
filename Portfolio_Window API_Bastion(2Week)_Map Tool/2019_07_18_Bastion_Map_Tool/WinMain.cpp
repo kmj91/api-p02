@@ -2035,8 +2035,8 @@ void InitTile()
 		for (int iCntX = 0; iCntX < iTileX; ++iCntX)
 		{
 			pTile = new stTile;
-			pTile->dPosX = (iCntX * 100) + ((iCntY % 2)+1) * (100 * 0.5);
-			pTile->dPosY = (50 * 0.5) * iCntY;
+			pTile->dPosX = (iCntX * df_TILE_SMALL_WIDTH) + ((iCntY + 1) % 2) * (df_TILE_SMALL_WIDTH * 0.5);
+			pTile->dPosY = (df_TILE_SMALL_HEIGHT * 0.5) * iCntY;
 			g_vecTile.emplace_back(pTile);
 		}
 	}
@@ -2053,8 +2053,8 @@ void InitTile()
 		for (int iCntX = 0; iCntX < iTileX; ++iCntX)
 		{
 			pTile = new stTile;
-			pTile->dPosX = (iCntX * 200) + ((iCntY % 2) + 1) * (200 * 0.5);
-			pTile->dPosY = (100 * 0.5) * iCntY;
+			pTile->dPosX = (iCntX * df_TILE_WIDTH) + ((iCntY + 1) % 2) * (df_TILE_WIDTH * 0.5);
+			pTile->dPosY = (df_TILE_HEIGHT * 0.5) * iCntY;
 			g_vecBigTile.emplace_back(pTile);
 		}
 	}
