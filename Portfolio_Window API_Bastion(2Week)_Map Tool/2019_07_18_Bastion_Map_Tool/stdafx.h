@@ -411,7 +411,8 @@ struct stVec2
 // extern
 extern CSpriteDib *g_cSprite;					// 스프라이트
 extern CList<Object *> *g_ObjectList;			// WinMain 오브젝트 리스트
-extern vector<stTile*> g_vecTile;				// 타일 좌표
+extern vector<stTile*> g_vecTile;				// 작은 타일 좌표 (1 x 1)
+extern vector<stTile*> g_vecBigTile;			// 큰 타일 좌표 (2 x 2)
 extern ObjectUnit *g_Player;					// 플레이어
 extern BYTE *g_bypDest;							// 스크린 버퍼
 extern int g_iDestWidth;						// 스크린 가로 길이

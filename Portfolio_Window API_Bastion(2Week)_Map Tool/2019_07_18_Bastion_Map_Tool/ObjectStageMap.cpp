@@ -76,39 +76,12 @@ bool ObjectStageMap::Click()
 			break;
 			// 4Ä­ Â¥¸® Å¸ÀÏ
 		case MOUSE_STATE_TILE_MAKE_4:
-			iTilePosX = g_iMouseX / df_TILE_WIDTH;
-			iTilePosY = g_iMouseY / df_TILE_HEIGHT;
-
-			//--------------------------------------
-			// È¦¼öÂ¦¼ö ±¸ºÐ
-			// È¦¼ö ¹øÂ° À§Ä¡°¡ ´Ù¸§
-			//--------------------------------------
-			if (iTilePosY % 2) {
-				if (iTilePosX % 2) {
-					iTilePosY = iTilePosY + 1;
-				}
-				else {
-
-				}
-			}
-			else {
-				if (iTilePosX % 2) {
-
-				}
-				else {
-					iTilePosY = iTilePosY + 1;
-				}
-			}
-
-			iTilePosX = iTilePosX * df_TILE_WIDTH;
-			iTilePosY = iTilePosY * df_TILE_HEIGHT;
-
-			iPropertiesX = iTilePosX / df_TILE_PROPERTIES_SIZE;
-			iPropertiesY = iTilePosY / df_TILE_PROPERTIES_SIZE;
+			iPropertiesX = g_MousePointer->m_dX / df_TILE_PROPERTIES_SIZE;
+			iPropertiesY = g_MousePointer->m_dY / df_TILE_PROPERTIES_SIZE;
 
 			SetProperties(iPropertiesX, iPropertiesY);
 
-			newObject = new ObjectUnit(df_TYPE_TILE, g_iMakeTileIndex, iTilePosX, iTilePosY);
+			newObject = new ObjectUnit(df_TYPE_TILE, g_iMakeTileIndex, g_MousePointer->m_dX, g_MousePointer->m_dY);
 			g_ObjectList->push_back(newObject);
 
 			break;

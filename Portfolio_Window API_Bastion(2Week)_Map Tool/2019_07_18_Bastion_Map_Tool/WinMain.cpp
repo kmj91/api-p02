@@ -56,7 +56,8 @@ enum enAction {
 // extern 변수
 CSpriteDib *g_cSprite;					// 스프라이트
 CList<Object *> *g_ObjectList;			// WinMain 오브젝트 리스트
-vector<stTile*> g_vecTile;				// 타일 좌표
+vector<stTile*> g_vecTile;				// 작은 타일 좌표 (1 x 1)
+vector<stTile*> g_vecBigTile;			// 큰 타일 좌표 (2 x 2)
 ObjectUnit *g_Player = NULL;			// 플레이어
 BYTE *g_bypDest;						// 스크린 버퍼
 int g_iDestWidth;						// 스크린 가로 길이
@@ -1042,6 +1043,7 @@ void LoadProcess();				// 불러오기 처리
 void UTF8toUTF16(const char *szText, WCHAR *szBuff, int iBuffLen);
 void UpdateProperties();
 bool CheckTile(double dTileY, double dTileX);
+bool CheckBigTile(double dTileY, double dTileX);
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	_In_opt_ HINSTANCE hPrevInstance,
@@ -1304,26 +1306,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 			break;
 		case MOUSE_STATE_TILE_MAKE_4:
-			iTileBlockX = g_iMouseX / df_TILE_WIDTH;
-			iTileBlockY = g_iMouseY / df_TILE_HEIGHT;
-
-			//--------------------------------------
-			// 홀수짝수 구분
-			// 홀수 번째 위치가 다름
-			//--------------------------------------
-			if (iTileBlockY % 2) {
-				if (iTileBlockX % 2) {
-					iTileBlockY = iTileBlockY + 1;
+			// 클릭한 타일 좌표 검사
+			for (auto& pTile : g_vecBigTile)
+			{
+				if (CheckBigTile(pTile->dPosY, pTile->dPosX))
+				{
+					g_MousePointer->m_dX = pTile->dPosX;
+					g_MousePointer->m_dY = pTile->dPosY;
+					break;
 				}
 			}
-			else {
-				if (!(iTileBlockX % 2)) {
-					iTileBlockY = iTileBlockY + 1;
-				}
-			}
-
-			g_MousePointer->m_dX = iTileBlockX * df_TILE_WIDTH;
-			g_MousePointer->m_dY = iTileBlockY * df_TILE_HEIGHT;
 
 			break;
 		case MOUSE_STATE_TILE_MAKE_1:
@@ -2047,21 +2039,42 @@ void LoadSprite()
 void InitTile()
 {
 	stTile* pTile = nullptr;
+	// 작은 타일 배열의 가로 세로 길이 계산 (맵의 실제 크기에 타일의 크기를 나누어서 계산)
 	int iTileX = g_iMapWidth / 100;
 	int iTileY = g_iMapHeight / 50;
 
+	// 메모리 생성
 	g_vecTile.reserve(iTileX * iTileY);
 
-	for (int i = 0; i < iTileY; ++i)
+	for (int iCntY = 0; iCntY < iTileY; ++iCntY)
 	{
-		for (int j = 0; j < iTileX; ++j)
+		for (int iCntX = 0; iCntX < iTileX; ++iCntX)
 		{
 			pTile = new stTile;
-			pTile->dPosX = (j * 100) + ((i % 2)+1) * 50;
-			pTile->dPosY = 25 * i;
+			pTile->dPosX = (iCntX * 100) + ((iCntY % 2)+1) * (100 * 0.5);
+			pTile->dPosY = (50 * 0.5) * iCntY;
 			g_vecTile.emplace_back(pTile);
 		}
 	}
+
+	// 큰 타일 배열의 가로 세로 길이 계산
+	iTileX = g_iMapWidth / 200;
+	iTileY = g_iMapHeight / 100;
+
+	// 메모리 생성
+	g_vecBigTile.reserve(iTileX * iTileY);
+
+	for (int iCntY = 0; iCntY < iTileY; ++iCntY)
+	{
+		for (int iCntX = 0; iCntX < iTileX; ++iCntX)
+		{
+			pTile = new stTile;
+			pTile->dPosX = (iCntX * 200) + ((iCntY % 2) + 1) * (200 * 0.5);
+			pTile->dPosY = (100 * 0.5) * iCntY;
+			g_vecBigTile.emplace_back(pTile);
+		}
+	}
+
 
 	return;
 }
@@ -4204,6 +4217,45 @@ bool CheckTile(double dTileY, double dTileX)
 		{ dTileX + (100 * 0.5f), dTileY },
 		{ dTileX, dTileY - (50 * 0.5f) },
 		{ dTileX - (100 * 0.5f), dTileY }
+	};
+	// y = mx + n -> n = y - mx;
+	// n
+	double dn[4] =
+	{
+		vPoint[0].dY - dm[0] * vPoint[0].dX,
+		vPoint[1].dY - dm[1] * vPoint[1].dX,
+		vPoint[2].dY - dm[2] * vPoint[2].dX,
+		vPoint[3].dY - dm[3] * vPoint[3].dX,
+	};
+	// 0 = ax + b - y;
+	if (0 < dm[0] * g_iMouseX + dn[0] - g_iMouseY &&
+		0 < dm[1] * g_iMouseX + dn[1] - g_iMouseY &&
+		0 > dm[2] * g_iMouseX + dn[2] - g_iMouseY &&
+		0 > dm[3] * g_iMouseX + dn[3] - g_iMouseY)
+		return true;
+
+	return false;
+}
+
+bool CheckBigTile(double dTileY, double dTileX)
+{
+	// y = mx + n;
+	// m
+	double dm[4] =
+	{
+		(100 * 0.5f) / (200 * 0.5f),
+		-(100 * 0.5f) / (200 * 0.5f),
+		(100 * 0.5f) / (200 * 0.5f),
+		-(100 * 0.5f) / (200 * 0.5f)
+	};
+
+	// 타일 꼭지점
+	stVec2 vPoint[4] =
+	{
+		{ dTileX, dTileY + (100 * 0.5f) },
+		{ dTileX + (200 * 0.5f), dTileY },
+		{ dTileX, dTileY - (100 * 0.5f) },
+		{ dTileX - (200 * 0.5f), dTileY }
 	};
 	// y = mx + n -> n = y - mx;
 	// n
