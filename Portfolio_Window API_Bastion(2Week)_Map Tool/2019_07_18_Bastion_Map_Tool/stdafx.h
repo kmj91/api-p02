@@ -401,6 +401,12 @@ struct stTile
 	double dPosY;
 };
 
+struct stVec2
+{
+	double dX;
+	double dY;
+};
+
 
 // extern
 extern CSpriteDib *g_cSprite;					// 스프라이트

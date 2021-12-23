@@ -1327,26 +1327,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 			break;
 		case MOUSE_STATE_TILE_MAKE_1:
-			iTileBlockX = g_iMouseX / df_TILE_SMALL_WIDTH;
-			iTileBlockY = g_iMouseY / df_TILE_SMALL_HEIGHT;
-
-			//--------------------------------------
-			// 홀수짝수 구분
-			// 홀수 번째 위치가 다름
-			//--------------------------------------
-			if (iTileBlockY % 2) {
-				if (iTileBlockX % 2) {
-					iTileBlockY = iTileBlockY + 1;
+			// 클릭한 타일 좌표 검사
+			for (auto& pTile : g_vecTile)
+			{
+				if (CheckTile(pTile->dPosY, pTile->dPosX))
+				{
+					g_MousePointer->m_dX = pTile->dPosX;
+					g_MousePointer->m_dY = pTile->dPosY;
+					break;
 				}
 			}
-			else {
-				if (!(iTileBlockX % 2)) {
-					iTileBlockY = iTileBlockY + 1;
-				}
-			}
-
-			g_MousePointer->m_dX = iTileBlockX * df_TILE_SMALL_WIDTH;
-			g_MousePointer->m_dY = iTileBlockY * df_TILE_SMALL_HEIGHT;
 
 			break;
 		case MOUSE_STATE_STAGE_MAKE:
@@ -2068,7 +2058,7 @@ void InitTile()
 		{
 			pTile = new stTile;
 			pTile->dPosX = (j * 100) + ((i % 2)+1) * 50;
-			pTile->dPosY = (double)25 * i;
+			pTile->dPosY = 25 * i;
 			g_vecTile.emplace_back(pTile);
 		}
 	}
@@ -4197,37 +4187,38 @@ void UpdateProperties()
 
 bool CheckTile(double dTileY, double dTileX)
 {
-	// y = ax + b;
-	// a
-	float fa[4] =
+	// y = mx + n;
+	// m
+	double dm[4] =
 	{
-		(TILECY * 0.5f) / (TILECX * 0.5f),
-		-(TILECY * 0.5f) / (TILECX * 0.5f),
-		(TILECY * 0.5f) / (TILECX * 0.5f),
-		-(TILECY * 0.5f) / (TILECX * 0.5f)
+		(50 * 0.5f) / (100 * 0.5f),
+		-(50 * 0.5f) / (100 * 0.5f),
+		(50 * 0.5f) / (100 * 0.5f),
+		-(50 * 0.5f) / (100 * 0.5f)
 	};
+
 	// 타일 꼭지점
-	_vec3 vPoint[4] =
+	stVec2 vPoint[4] =
 	{
-		{ _fTileX, _fTileY + (TILECY * 0.5f), 0.f },
-		{ _fTileX + (TILECX * 0.5f), _fTileY, 0.f },
-		{ _fTileX, _fTileY - (TILECY * 0.5f), 0.f },
-		{ _fTileX - (TILECX * 0.5f), _fTileY, 0.f }
+		{ dTileX, dTileY + (50 * 0.5f) },
+		{ dTileX + (100 * 0.5f), dTileY },
+		{ dTileX, dTileY - (50 * 0.5f) },
+		{ dTileX - (100 * 0.5f), dTileY }
 	};
-	// y = ax + b -> b = y - ax;
-	// b
-	float fb[4] =
+	// y = mx + n -> n = y - mx;
+	// n
+	double dn[4] =
 	{
-		vPoint[0].y - fa[0] * vPoint[0].x,
-		vPoint[1].y - fa[1] * vPoint[1].x,
-		vPoint[2].y - fa[2] * vPoint[2].x,
-		vPoint[3].y - fa[3] * vPoint[3].x,
+		vPoint[0].dY - dm[0] * vPoint[0].dX,
+		vPoint[1].dY - dm[1] * vPoint[1].dX,
+		vPoint[2].dY - dm[2] * vPoint[2].dX,
+		vPoint[3].dY - dm[3] * vPoint[3].dX,
 	};
 	// 0 = ax + b - y;
-	if (0 < fa[0] * _iX + fb[0] - _iY &&
-		0 < fa[1] * _iX + fb[1] - _iY &&
-		0 > fa[2] * _iX + fb[2] - _iY &&
-		0 > fa[3] * _iX + fb[3] - _iY)
+	if (0 < dm[0] * g_iMouseX + dn[0] - g_iMouseY &&
+		0 < dm[1] * g_iMouseX + dn[1] - g_iMouseY &&
+		0 > dm[2] * g_iMouseX + dn[2] - g_iMouseY &&
+		0 > dm[3] * g_iMouseX + dn[3] - g_iMouseY)
 		return true;
 
 	return false;
