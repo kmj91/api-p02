@@ -4182,10 +4182,15 @@ void UpdateProperties()
 }
 
 
+// 직선의 방정식으로 타일 피킹 검사 (1 x 1 타일)
+// dTileY : 타일 중심 좌표 Y
+// dTileX : 타일 중심 좌표 X
+// 반환 값 : 마우스 좌표가 타일 안이면 true 아니면 false
 bool CheckTile(double dTileY, double dTileX)
 {
 	// y = mx + n;
-	// m
+	// y / x
+	// m : 직선의 기울기
 	double dm[4] =
 	{
 		(df_TILE_SMALL_HEIGHT * 0.5f) / (df_TILE_SMALL_WIDTH * 0.5f),
@@ -4194,7 +4199,7 @@ bool CheckTile(double dTileY, double dTileX)
 		-(df_TILE_SMALL_HEIGHT * 0.5f) / (df_TILE_SMALL_WIDTH * 0.5f)
 	};
 
-	// 타일 꼭지점
+	// 타일 꼭지점 좌표
 	stVec2 vPoint[4] =
 	{
 		{ dTileX, dTileY + (df_TILE_SMALL_HEIGHT * 0.5f) },
@@ -4202,8 +4207,9 @@ bool CheckTile(double dTileY, double dTileX)
 		{ dTileX, dTileY - (df_TILE_SMALL_HEIGHT * 0.5f) },
 		{ dTileX - (df_TILE_SMALL_WIDTH * 0.5f), dTileY }
 	};
-	// y = mx + n -> n = y - mx;
-	// n
+	// y = mx + n
+	// n = y - mx;
+	// n : y절편 값
 	double dn[4] =
 	{
 		vPoint[0].dY - dm[0] * vPoint[0].dX,
@@ -4211,7 +4217,7 @@ bool CheckTile(double dTileY, double dTileX)
 		vPoint[2].dY - dm[2] * vPoint[2].dX,
 		vPoint[3].dY - dm[3] * vPoint[3].dX,
 	};
-	// 0 = ax + b - y;
+	// 0 = mx + n - y;
 	if (0 < dm[0] * g_iMouseX + dn[0] - g_iMouseY &&
 		0 < dm[1] * g_iMouseX + dn[1] - g_iMouseY &&
 		0 > dm[2] * g_iMouseX + dn[2] - g_iMouseY &&
@@ -4221,10 +4227,15 @@ bool CheckTile(double dTileY, double dTileX)
 	return false;
 }
 
+// 직선의 방정식으로 타일 피킹 검사 (2 x 2 타일)
+// dTileY : 타일 중심 좌표 Y
+// dTileX : 타일 중심 좌표 X
+// 반환 값 : 마우스 좌표가 타일 안이면 true 아니면 false
 bool CheckBigTile(double dTileY, double dTileX)
 {
 	// y = mx + n;
-	// m
+	// y / x
+	// m : 직선의 기울기
 	double dm[4] =
 	{
 		(df_TILE_HEIGHT * 0.5f) / (df_TILE_WIDTH * 0.5f),
@@ -4233,7 +4244,7 @@ bool CheckBigTile(double dTileY, double dTileX)
 		-(df_TILE_HEIGHT * 0.5f) / (df_TILE_WIDTH * 0.5f)
 	};
 
-	// 타일 꼭지점
+	// 타일의 꼭지점 좌표
 	stVec2 vPoint[4] =
 	{
 		{ dTileX, dTileY + (df_TILE_HEIGHT * 0.5f) },
@@ -4241,8 +4252,9 @@ bool CheckBigTile(double dTileY, double dTileX)
 		{ dTileX, dTileY - (df_TILE_HEIGHT * 0.5f) },
 		{ dTileX - (df_TILE_WIDTH * 0.5f), dTileY }
 	};
-	// y = mx + n -> n = y - mx;
-	// n
+	// y = mx + n
+	// n = y - mx;
+	// n : y절편 값
 	double dn[4] =
 	{
 		vPoint[0].dY - dm[0] * vPoint[0].dX,
@@ -4250,7 +4262,7 @@ bool CheckBigTile(double dTileY, double dTileX)
 		vPoint[2].dY - dm[2] * vPoint[2].dX,
 		vPoint[3].dY - dm[3] * vPoint[3].dX,
 	};
-	// 0 = ax + b - y;
+	// 0 = mx + n - y;
 	if (0 < dm[0] * g_iMouseX + dn[0] - g_iMouseY &&
 		0 < dm[1] * g_iMouseX + dn[1] - g_iMouseY &&
 		0 > dm[2] * g_iMouseX + dn[2] - g_iMouseY &&
