@@ -1044,6 +1044,7 @@ void UTF8toUTF16(const char *szText, WCHAR *szBuff, int iBuffLen);
 void UpdateProperties();
 bool CheckTile(double dTileY, double dTileX);
 bool CheckBigTile(double dTileY, double dTileX);
+bool CheckTileDot(double dTileY, double dTileX);
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	_In_opt_ HINSTANCE hPrevInstance,
@@ -1322,7 +1323,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			// 클릭한 타일 좌표 검사
 			for (auto& pTile : g_vecTile)
 			{
-				if (CheckTile(pTile->dPosY, pTile->dPosX))
+				if (CheckTileDot(pTile->dPosY, pTile->dPosX))
 				{
 					g_MousePointer->m_dX = pTile->dPosX;
 					g_MousePointer->m_dY = pTile->dPosY;
@@ -4270,4 +4271,55 @@ bool CheckBigTile(double dTileY, double dTileX)
 		return true;
 
 	return false;
+}
+
+// 내적으로 타일 피킹 검사 (1 x 1 타일)
+// dTileY : 타일 중심 좌표 Y
+// dTileX : 타일 중심 좌표 X
+// 반환 값 : 마우스 좌표가 타일 안이면 true 아니면 false
+bool CheckTileDot(double dTileY, double dTileX)
+{
+	// 타일의 꼭지점 좌표
+	stVec2 vPoint[4] =
+	{
+		{ dTileX, dTileY + (df_TILE_SMALL_HEIGHT * 0.5f) },
+		{ dTileX + (df_TILE_SMALL_WIDTH * 0.5f), dTileY },
+		{ dTileX, dTileY - (df_TILE_SMALL_HEIGHT * 0.5f) },
+		{ dTileX - (df_TILE_SMALL_WIDTH * 0.5f), dTileY }
+	};
+	
+	// 타일 방향 벡터
+	stVec2 vTileDir[4] =
+	{
+		vPoint[1] - vPoint[0],
+		vPoint[2] - vPoint[1],
+		vPoint[3] - vPoint[2],
+		vPoint[0] - vPoint[3]
+	};
+	// 타일 방향벡터의 법선벡터
+	stVec2 vNormal[4] =
+	{
+		{ -vTileDir[0].dY, vTileDir[0].dX },
+		{ -vTileDir[1].dY, vTileDir[1].dX },
+		{ -vTileDir[2].dY, vTileDir[2].dX },
+		{ -vTileDir[3].dY, vTileDir[3].dX }
+	};
+	// 타일에서 마우스 방향벡터
+	stVec2 vMouse(g_iMouseX, g_iMouseY);
+	stVec2 vMouseDir[4] =
+	{
+		vMouse - vPoint[0],
+		vMouse - vPoint[1],
+		vMouse - vPoint[2],
+		vMouse - vPoint[3],
+
+	};
+	// 타일 법선벡터와 마우스 방향벡터 내적하여 타일 피킹 검사
+	for (int iCnt = 0; iCnt < 4; ++iCnt)
+	{
+		// 둔각이면 바깥
+		if (0 < (vNormal[iCnt].dX * vMouseDir[iCnt].dX) + (vNormal[iCnt].dY * vMouseDir[iCnt].dY))
+			return false;
+	}
+	return true;
 }

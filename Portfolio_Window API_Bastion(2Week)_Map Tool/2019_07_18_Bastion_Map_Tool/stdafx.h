@@ -403,6 +403,17 @@ struct stTile
 
 struct stVec2
 {
+	stVec2(double _dX, double _dY)
+	{
+		dX = _dX;
+		dY = _dY;
+	}
+
+	stVec2 operator - (const stVec2 _right) const
+	{
+		return stVec2(dX - _right.dX, dY - _right.dY);
+	}
+
 	double dX;
 	double dY;
 };
