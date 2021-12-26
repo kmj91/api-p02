@@ -1197,6 +1197,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	for (auto& pTile : g_vecTile)
 		delete pTile;
 	g_vecTile.clear();
+	g_vecTile.shrink_to_fit();
+
+	for (auto& pTile : g_vecBigTile)
+		delete pTile;
+	g_vecBigTile.clear();
+	g_vecBigTile.shrink_to_fit();
 
 
 	return (int)msg.wParam;
@@ -1456,7 +1462,18 @@ LRESULT ChangeSizeProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 			g_ObjectStageMap->ResizeMap(g_iMapWidth, g_iMapHeight);
 			// 속성 값 재배열 해야되는 처리...
 			UpdateProperties();
+			// 기존에 있던 타일 메모리 정리
+			for (auto& pTile : g_vecTile)
+				delete pTile;
+			g_vecTile.clear();
+			g_vecTile.shrink_to_fit();
 
+			for (auto& pTile : g_vecBigTile)
+				delete pTile;
+			g_vecBigTile.clear();
+			g_vecBigTile.shrink_to_fit();
+			// 타일 초기화
+			InitTile();
 
 			EndDialog(hDlg, TRUE);
 			SetForegroundWindow(g_hWnd);
@@ -2024,8 +2041,8 @@ void InitTile()
 {
 	stTile* pTile = nullptr;
 	// 작은 타일 배열의 가로 세로 길이 계산 (맵의 실제 크기에 타일의 크기를 나누어서 계산)
-	int iTileX = g_iMapWidth / 100;
-	int iTileY = g_iMapHeight / 50;
+	int iTileX = g_iMapWidth / df_TILE_SMALL_WIDTH;
+	int iTileY = g_iMapHeight / df_TILE_SMALL_HEIGHT;
 
 	// 메모리 생성
 	g_vecTile.reserve(iTileX * iTileY);
@@ -2042,8 +2059,8 @@ void InitTile()
 	}
 
 	// 큰 타일 배열의 가로 세로 길이 계산
-	iTileX = g_iMapWidth / 200;
-	iTileY = g_iMapHeight / 100;
+	iTileX = g_iMapWidth / df_TILE_WIDTH;
+	iTileY = g_iMapHeight / df_TILE_HEIGHT;
 
 	// 메모리 생성
 	g_vecBigTile.reserve(iTileX * iTileY);
@@ -2058,9 +2075,6 @@ void InitTile()
 			g_vecBigTile.emplace_back(pTile);
 		}
 	}
-
-
-	return;
 }
 
 
