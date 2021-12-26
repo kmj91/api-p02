@@ -1042,8 +1042,7 @@ void SaveProcess();				// 세이브 처리
 void LoadProcess();				// 불러오기 처리
 void UTF8toUTF16(const char *szText, WCHAR *szBuff, int iBuffLen);
 void UpdateProperties();
-bool CheckTile(double dTileY, double dTileX);
-bool CheckBigTile(double dTileY, double dTileX);
+bool CheckTile(double dTileY, double dTileX, int iTileWidth, int iTileHeight);
 bool CheckTileDot(double dTileY, double dTileX, int iTileWidth, int iTileHeight);
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
@@ -1310,7 +1309,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			// 클릭한 타일 좌표 검사
 			for (auto& pTile : g_vecBigTile)
 			{
-				if (CheckBigTile(pTile->dPosY, pTile->dPosX))
+				if (CheckTile(pTile->dPosY, pTile->dPosX, df_TILE_WIDTH, df_TILE_HEIGHT))
 				{
 					g_MousePointer->m_dX = pTile->dPosX;
 					g_MousePointer->m_dY = pTile->dPosY;
@@ -1353,7 +1352,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			// 클릭한 타일 좌표 검사
 			for (auto& pTile : g_vecBigTile)
 			{
-				if (CheckBigTile(pTile->dPosY, pTile->dPosX))
+				if (CheckTile(pTile->dPosY, pTile->dPosX, df_TILE_WIDTH, df_TILE_HEIGHT))
 				{
 					g_MousePointer->m_dX = pTile->dPosX;
 					g_MousePointer->m_dY = pTile->dPosY;
@@ -4183,75 +4182,32 @@ void UpdateProperties()
 }
 
 
-// 직선의 방정식으로 타일 피킹 검사 (1 x 1 타일)
+// 직선의 방정식으로 타일 피킹 검사
 // dTileY : 타일 중심 좌표 Y
 // dTileX : 타일 중심 좌표 X
+// iTileWidth : 타일 가로 길이
+// iTileHeight : 타일 세로 길이
 // 반환 값 : 마우스 좌표가 타일 안이면 true 아니면 false
-bool CheckTile(double dTileY, double dTileX)
+bool CheckTile(double dTileY, double dTileX, int iTileWidth, int iTileHeight)
 {
 	// y = mx + n;
 	// y / x
 	// m : 직선의 기울기
 	double dm[4] =
 	{
-		(df_TILE_SMALL_HEIGHT * 0.5f) / (df_TILE_SMALL_WIDTH * 0.5f),
-		-(df_TILE_SMALL_HEIGHT * 0.5f) / (df_TILE_SMALL_WIDTH * 0.5f),
-		(df_TILE_SMALL_HEIGHT * 0.5f) / (df_TILE_SMALL_WIDTH * 0.5f),
-		-(df_TILE_SMALL_HEIGHT * 0.5f) / (df_TILE_SMALL_WIDTH * 0.5f)
+		(iTileHeight * 0.5f) / (iTileWidth * 0.5f),
+		-(iTileHeight * 0.5f) / (iTileWidth * 0.5f),
+		(iTileHeight * 0.5f) / (iTileWidth * 0.5f),
+		-(iTileHeight * 0.5f) / (iTileWidth * 0.5f)
 	};
 
 	// 타일 꼭지점 좌표
 	stVec2 vPoint[4] =
 	{
-		{ dTileX, dTileY + (df_TILE_SMALL_HEIGHT * 0.5f) },
-		{ dTileX + (df_TILE_SMALL_WIDTH * 0.5f), dTileY },
-		{ dTileX, dTileY - (df_TILE_SMALL_HEIGHT * 0.5f) },
-		{ dTileX - (df_TILE_SMALL_WIDTH * 0.5f), dTileY }
-	};
-	// y = mx + n
-	// n = y - mx;
-	// n : y절편 값
-	double dn[4] =
-	{
-		vPoint[0].dY - dm[0] * vPoint[0].dX,
-		vPoint[1].dY - dm[1] * vPoint[1].dX,
-		vPoint[2].dY - dm[2] * vPoint[2].dX,
-		vPoint[3].dY - dm[3] * vPoint[3].dX,
-	};
-	// 0 = mx + n - y;
-	if (0 < dm[0] * g_iMouseX + dn[0] - g_iMouseY &&
-		0 < dm[1] * g_iMouseX + dn[1] - g_iMouseY &&
-		0 > dm[2] * g_iMouseX + dn[2] - g_iMouseY &&
-		0 > dm[3] * g_iMouseX + dn[3] - g_iMouseY)
-		return true;
-
-	return false;
-}
-
-// 직선의 방정식으로 타일 피킹 검사 (2 x 2 타일)
-// dTileY : 타일 중심 좌표 Y
-// dTileX : 타일 중심 좌표 X
-// 반환 값 : 마우스 좌표가 타일 안이면 true 아니면 false
-bool CheckBigTile(double dTileY, double dTileX)
-{
-	// y = mx + n;
-	// y / x
-	// m : 직선의 기울기
-	double dm[4] =
-	{
-		(df_TILE_HEIGHT * 0.5f) / (df_TILE_WIDTH * 0.5f),
-		-(df_TILE_HEIGHT * 0.5f) / (df_TILE_WIDTH * 0.5f),
-		(df_TILE_HEIGHT * 0.5f) / (df_TILE_WIDTH * 0.5f),
-		-(df_TILE_HEIGHT * 0.5f) / (df_TILE_WIDTH * 0.5f)
-	};
-
-	// 타일의 꼭지점 좌표
-	stVec2 vPoint[4] =
-	{
-		{ dTileX, dTileY + (df_TILE_HEIGHT * 0.5f) },
-		{ dTileX + (df_TILE_WIDTH * 0.5f), dTileY },
-		{ dTileX, dTileY - (df_TILE_HEIGHT * 0.5f) },
-		{ dTileX - (df_TILE_WIDTH * 0.5f), dTileY }
+		{ dTileX, dTileY + (iTileHeight * 0.5f) },
+		{ dTileX + (iTileWidth * 0.5f), dTileY },
+		{ dTileX, dTileY - (iTileHeight * 0.5f) },
+		{ dTileX - (iTileWidth * 0.5f), dTileY }
 	};
 	// y = mx + n
 	// n = y - mx;
