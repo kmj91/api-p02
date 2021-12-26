@@ -1044,7 +1044,7 @@ void UTF8toUTF16(const char *szText, WCHAR *szBuff, int iBuffLen);
 void UpdateProperties();
 bool CheckTile(double dTileY, double dTileX);
 bool CheckBigTile(double dTileY, double dTileX);
-bool CheckTileDot(double dTileY, double dTileX);
+bool CheckTileDot(double dTileY, double dTileX, int iTileWidth, int iTileHeight);
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	_In_opt_ HINSTANCE hPrevInstance,
@@ -1323,7 +1323,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			// 클릭한 타일 좌표 검사
 			for (auto& pTile : g_vecTile)
 			{
-				if (CheckTileDot(pTile->dPosY, pTile->dPosX))
+				if (CheckTileDot(pTile->dPosY, pTile->dPosX, df_TILE_SMALL_WIDTH, df_TILE_SMALL_HEIGHT))
 				{
 					g_MousePointer->m_dX = pTile->dPosX;
 					g_MousePointer->m_dY = pTile->dPosY;
@@ -4276,16 +4276,18 @@ bool CheckBigTile(double dTileY, double dTileX)
 // 내적으로 타일 피킹 검사 (1 x 1 타일)
 // dTileY : 타일 중심 좌표 Y
 // dTileX : 타일 중심 좌표 X
+// iTileWidth : 타일 가로 길이
+// iTileHeight : 타일 세로 길이
 // 반환 값 : 마우스 좌표가 타일 안이면 true 아니면 false
-bool CheckTileDot(double dTileY, double dTileX)
+bool CheckTileDot(double dTileY, double dTileX, int iTileWidth, int iTileHeight)
 {
 	// 타일의 꼭지점 좌표
 	stVec2 vPoint[4] =
 	{
-		{ dTileX, dTileY + (df_TILE_SMALL_HEIGHT * 0.5f) },
-		{ dTileX + (df_TILE_SMALL_WIDTH * 0.5f), dTileY },
-		{ dTileX, dTileY - (df_TILE_SMALL_HEIGHT * 0.5f) },
-		{ dTileX - (df_TILE_SMALL_WIDTH * 0.5f), dTileY }
+		{ dTileX, dTileY + (iTileHeight * 0.5f) },
+		{ dTileX + (iTileWidth * 0.5f), dTileY },
+		{ dTileX, dTileY - (iTileHeight * 0.5f) },
+		{ dTileX - (iTileWidth * 0.5f), dTileY }
 	};
 	
 	// 타일 방향 벡터
