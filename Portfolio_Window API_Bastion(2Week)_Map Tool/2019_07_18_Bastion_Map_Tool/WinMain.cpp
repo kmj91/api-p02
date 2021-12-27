@@ -4243,7 +4243,7 @@ bool CheckTile(double dTileY, double dTileX, int iTileWidth, int iTileHeight)
 	return false;
 }
 
-// 내적으로 타일 피킹 검사 (1 x 1 타일)
+// 내적으로 타일 피킹 검사
 // dTileY : 타일 중심 좌표 Y
 // dTileX : 타일 중심 좌표 X
 // iTileWidth : 타일 가로 길이
@@ -4260,7 +4260,7 @@ bool CheckTileDot(double dTileY, double dTileX, int iTileWidth, int iTileHeight)
 		{ dTileX - (iTileWidth * 0.5f), dTileY }
 	};
 	
-	// 타일 방향 벡터
+	// 타일 방향벡터
 	stVec2 vTileDir[4] =
 	{
 		vPoint[1] - vPoint[0],
@@ -4284,12 +4284,11 @@ bool CheckTileDot(double dTileY, double dTileX, int iTileWidth, int iTileHeight)
 		vMouse - vPoint[1],
 		vMouse - vPoint[2],
 		vMouse - vPoint[3],
-
 	};
 	// 타일 법선벡터와 마우스 방향벡터 내적하여 타일 피킹 검사
 	for (int iCnt = 0; iCnt < 4; ++iCnt)
 	{
-		// 둔각이면 바깥
+		// 값이 양수면 예각 마우스가 타일 바깥에 있음
 		if (0 < (vNormal[iCnt].dX * vMouseDir[iCnt].dX) + (vNormal[iCnt].dY * vMouseDir[iCnt].dY))
 			return false;
 	}
