@@ -17,14 +17,14 @@ public:
 
 	// 맵 크기 변경시 기존 메모리를 삭제하고 다시 메모리 사이즈를 할당
 	void ResizeMap(int iMapWidth, int iMapHeight);
+	void SetProperties(int iPropertiesX, int iPropertiesY);
 	bool CheckProperties(int iPropertiesX, int iPropertiesY);
 
 private:
 	void CreateMap(int iMapWidth, int iMapHeight);
 	void ReleaseMap();
 
-public:
-	void SetProperties(int iPropertiesX, int iPropertiesY);
+	void CheckPosition(int& iPropertiesX, int& iPropertiesY, int& iReviseX, int& iReviseY, int& iPropertiesSizeX, int& iPropertiesSizeY);
 	
 
 public:

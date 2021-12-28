@@ -234,47 +234,17 @@ void ObjectStageMap::ResizeMap(int iMapWidth, int iMapHeight)
 	CreateMap(iMapWidth, iMapHeight);
 }
 
-// 맵 속성 생성
-// iMapWidth : 맵 속성 가로 길이
-// iMapHeight : 맵 속성 세로 길이
-void ObjectStageMap::CreateMap(int iMapWidth, int iMapHeight)
-{
-	// 가로
-	m_iPropertiesWidth = iMapWidth / df_TILE_PROPERTIES_SIZE;
-	if (iMapWidth % df_TILE_PROPERTIES_SIZE) {
-		++m_iPropertiesWidth;
-	}
-	// 세로
-	m_iPropertiesHeight = iMapHeight / df_TILE_PROPERTIES_SIZE;
-	if (iMapHeight % df_TILE_PROPERTIES_SIZE) {
-		++m_iPropertiesHeight;
-	}
-	// 크기
-	m_iPropertiesSize = m_iPropertiesWidth * m_iPropertiesHeight;
-
-	// 동적 생성
-	m_bypMapProperties = (BYTE*)malloc(m_iPropertiesSize);
-
-	// 1번으로 멤셋 1번은 빈 공간임
-	memset(m_bypMapProperties, 1, m_iPropertiesSize);
-}
-
-void ObjectStageMap::ReleaseMap()
-{
-	free(m_bypMapProperties);
-}
-
 // 속성 값 셋
 // iPropertiesX : 변경할 속성 시작 좌표 X
 // iPropertiesY : 변경할 속성 시작 좌표 Y
 void ObjectStageMap::SetProperties(int iPropertiesX, int iPropertiesY)
 {
-	int iCntX;						// 카운트 X
-	int iCntY;						// 카운트 Y
-	int iArrayCntX;					// 맵 속성 배열의 범위를 벗어날 경우 보정할 좌표 X
-	int iArrayCntY;					// 맵 속성 배열의 범위를 벗어날 경우 보정할 좌표 Y
-	int iPropertiesSizeX;			// 변경할 속성 가로 길이
-	int iPropertiesSizeY;			// 변경할 속성 세로 길이
+	int iCntX = 0;					// 카운트 X
+	int iCntY = 0;					// 카운트 Y
+	int iReviseX = 0;				// 맵 속성 배열의 범위를 벗어날 경우 보정할 좌표 X
+	int iReviseY = 0;				// 맵 속성 배열의 범위를 벗어날 경우 보정할 좌표 Y
+	int iPropertiesSizeX = g_iMakePropertiesSizeX;		// 변경할 속성 가로 길이
+	int iPropertiesSizeY = g_iMakePropertiesSizeY;		// 변경할 속성 세로 길이
 	int iArrayPropertiesIndex;		// 변경할 속성 배열 인덱스
 	int iMapPropertiesIndex;		// 변경할 맵 속성 배열 인덱스
 
@@ -285,42 +255,15 @@ void ObjectStageMap::SetProperties(int iPropertiesX, int iPropertiesY)
 	iPropertiesX = iPropertiesX - g_iPropertiesCenterPointX;
 	iPropertiesY = iPropertiesY - g_iPropertiesCenterPointY;
 
+	// 맵 밖으로 나가는지 검사
+	CheckPosition(iPropertiesX, iPropertiesY, iReviseX, iReviseY, iPropertiesSizeX, iPropertiesSizeY);
 
-	iPropertiesSizeX = g_iMakePropertiesSizeX;	// 변경할 속성 가로 길이
-	iPropertiesSizeY = g_iMakePropertiesSizeY;	// 변경할 속성 세로 길이
-
-	// 맵 속성 배열의 범위를 벗어날 경우 보정활 좌표
-	iArrayCntX = 0;
-	iArrayCntY = 0;
-
-	// 화면밖으로 빠져나가는지?
-	// 빠져나가면 좌표와 길이들 보정
-	if (iPropertiesX < 0) {
-		iArrayCntX = -iPropertiesX;
-		iPropertiesSizeX = iPropertiesSizeX + iPropertiesX;
-		iPropertiesX = 0;
-	}
-	if (iPropertiesX + iPropertiesSizeX > m_iPropertiesWidth) {
-		iPropertiesSizeX = iPropertiesSizeX - ((iPropertiesX + iPropertiesSizeX) - m_iPropertiesWidth);
-	}
-	if (iPropertiesY < 0) {
-		iArrayCntY = -iPropertiesY;
-		iPropertiesSizeY = iPropertiesSizeY + iPropertiesY;
-		iPropertiesY = 0;
-	}
-	if (iPropertiesY + iPropertiesSizeY > m_iPropertiesHeight) {
-		iPropertiesSizeY = iPropertiesSizeY - ((iPropertiesY + iPropertiesSizeY) - m_iPropertiesHeight);
-	}
-
-
-	// 속성 변경
-	iCntY = 0;
+	// 반복문을 돌면서 속성 변경
 	while (iCntY < iPropertiesSizeY) {
-
 		iCntX = 0;
 		while (iCntX < iPropertiesSizeX) {
 			// 변경할 속성 1차원 인덱스 값
-			iArrayPropertiesIndex = (iArrayCntX + iCntX) + ((iArrayCntY + iCntY) * g_iMakePropertiesSizeX);
+			iArrayPropertiesIndex = (iReviseX + iCntX) + ((iReviseY + iCntY) * g_iMakePropertiesSizeX);
 
 			// 공백 무시 1번은 빈 공간 속성임
 			if (g_bypArrayMAkeTileProperties[iArrayPropertiesIndex] == 1) {
@@ -332,6 +275,8 @@ void ObjectStageMap::SetProperties(int iPropertiesX, int iPropertiesY)
 			iMapPropertiesIndex = (iPropertiesX + iCntX) + ((iPropertiesY + iCntY) * m_iPropertiesWidth);
 
 			// 속성 변경
+			// g_bypArrayMAkeTileProperties : 생성된 타일의 속성 정보 배열
+			// m_bypMapProperties : 맵의 전체 속성 정보를 가지고있는 배열
 			m_bypMapProperties[iMapPropertiesIndex] = g_bypArrayMAkeTileProperties[iArrayPropertiesIndex];
 			++iCntX;
 		}
@@ -360,7 +305,7 @@ bool ObjectStageMap::CheckProperties(int iPropertiesX, int iPropertiesY)
 	//--------------------------------------
 	iPropertiesX = iPropertiesX - g_iPropertiesCenterPointX;
 	iPropertiesY = iPropertiesY - g_iPropertiesCenterPointY;
-	
+
 
 	iPropertiesSizeX = g_iMakePropertiesSizeX;			// 속성 가로 길이
 	iPropertiesSizeY = g_iMakePropertiesSizeY;			// 속성 세로 길이
@@ -414,4 +359,72 @@ bool ObjectStageMap::CheckProperties(int iPropertiesX, int iPropertiesY)
 	}
 
 	return true;
+}
+
+
+
+
+
+// 맵 속성 생성
+// iMapWidth : 맵 속성 가로 길이
+// iMapHeight : 맵 속성 세로 길이
+void ObjectStageMap::CreateMap(int iMapWidth, int iMapHeight)
+{
+	// 가로
+	m_iPropertiesWidth = iMapWidth / df_TILE_PROPERTIES_SIZE;
+	if (iMapWidth % df_TILE_PROPERTIES_SIZE) {
+		++m_iPropertiesWidth;
+	}
+	// 세로
+	m_iPropertiesHeight = iMapHeight / df_TILE_PROPERTIES_SIZE;
+	if (iMapHeight % df_TILE_PROPERTIES_SIZE) {
+		++m_iPropertiesHeight;
+	}
+	// 크기
+	m_iPropertiesSize = m_iPropertiesWidth * m_iPropertiesHeight;
+
+	// 동적 생성
+	m_bypMapProperties = (BYTE*)malloc(m_iPropertiesSize);
+
+	// 1번으로 멤셋 1번은 빈 공간임
+	memset(m_bypMapProperties, 1, m_iPropertiesSize);
+}
+
+void ObjectStageMap::ReleaseMap()
+{
+	free(m_bypMapProperties);
+}
+
+
+// 맵 밖으로 나가는지 검사
+// 범위 밖으로 나가면 나가는 만큼 크기 보정
+// ipPropertiesX : 속성 시작 좌표 X
+// ipPropertiesY : 속성 시작 좌표 Y
+// iReviseX : 보정할 좌표 값 X
+// iReviseY : 보정할 좌표 값 Y
+// ipPropertiesSizeX : 속성 가로 길이
+// ipPropertiesSizeY : 속성 세로 길이
+void ObjectStageMap::CheckPosition(int& iPropertiesX, int& iPropertiesY, int& iReviseX, int& iReviseY, int& iPropertiesSizeX, int& iPropertiesSizeY)
+{
+	// 빠져나가면 좌표와 길이들 보정
+	// 왼쪽
+	if (iPropertiesX < 0) {
+		iReviseX = -iPropertiesX;
+		iPropertiesSizeX = iPropertiesSizeX + iPropertiesX;
+		iPropertiesX = 0;
+	}
+	// 오른쪽
+	if (iPropertiesX + iPropertiesSizeX > m_iPropertiesWidth) {
+		iPropertiesSizeX = iPropertiesSizeX - ((iPropertiesX + iPropertiesSizeX) - m_iPropertiesWidth);
+	}
+	// 위
+	if (iPropertiesY < 0) {
+		iReviseY = -iPropertiesY;
+		iPropertiesSizeY = iPropertiesSizeY + iPropertiesY;
+		iPropertiesY = 0;
+	}
+	// 아래
+	if (iPropertiesY + iPropertiesSizeY > m_iPropertiesHeight) {
+		iPropertiesSizeY = iPropertiesSizeY - ((iPropertiesY + iPropertiesSizeY) - m_iPropertiesHeight);
+	}
 }
