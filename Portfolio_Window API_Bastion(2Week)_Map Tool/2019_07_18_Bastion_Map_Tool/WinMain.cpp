@@ -2444,13 +2444,12 @@ void SaveProcess()
 
 	// 파일 이름
 	wsprintfW(FileName, L"testProperties.txt");
-
 	// 파일 쓰기
 	err = _wfopen_s(&fp, FileName, L"wt");
 	if (err != 0) {
 		return;
 	}
-
+	// 속성 정보 메모리 그대로 한번에 파일에 저장
 	fwrite(g_ObjectStageMap->m_bypMapProperties, iSize, 1, fp);
 	fclose(fp);
 
@@ -2474,22 +2473,19 @@ void SaveProcess()
 
 	//WCHAR * wchBuffer = (WCHAR *)new char[size];
 
-	// 파일 크기
+	// 헤더에 사용할 파일 크기
 	fileSize = size;
-
 	// 파일 이름
 	wsprintfW(FileName, L"test.txt");
-
 	// 파일 쓰기
-	
 	err = _wfopen_s(&fp, FileName, L"wt");
 	if (err != 0) {
 		return;
 	}
 
-	//헤더
+	// 헤더
 	fwrite(&fileSize, sizeof(UINT64), 1, fp);
-	//내용물
+	// 내용물 JSON 포멧 데이터
 	fwrite(pJson, size, 1, fp);
 	fclose(fp);
 }
