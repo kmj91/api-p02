@@ -8,7 +8,7 @@ template <typename T>
 class CList
 {
 public:
-	// 컨테이너
+	// 노드
 	struct Node
 	{
 		T _data;
@@ -60,25 +60,25 @@ public:
 			return (temp);
 		}
 
-		//같은감?
+		// 같은지 비교
 		bool operator==(const iterator& _Right) const
 		{
 			return (_node == _Right._node);
 		}
 
-		//안같은감?
+		// 위에서 구현한 == 연산자 이용
 		bool operator!=(const iterator& _Right) const
 		{
 			return (!(*this == _Right));
 		}
 
-		//현제 노드의 데이터 뽑음
+		// 현제 노드의 데이터 반환
 		T& operator *() const
 		{
 			return (_node->_data);
 		}
 
-		//되려나?
+		// 포인터 찌르기 구조체 반환
 		Node* operator->() const {
 			return _node;
 		}
@@ -111,24 +111,23 @@ public:
 		return iterator(_tail);
 	}
 
+	// 노드 삭제
 	iterator erase(iterator iter) {
-		//	- 이터레이터의 그 노드를 지움.
-		//	- 그리고 지운 노드의 다음 노드를 카리키는 이터레이터 리턴
 		Node *node = _head->_Next;
 		Node *temp = nullptr;
-		while (node != _tail) {
-			if (node == iter._node) {
-				temp = node->_Prev;
-				temp->_Next = node->_Next;
-				temp = node->_Next;
-				temp->_Prev = node->_Prev;
-				delete node;
-				--_size;
-				return temp;
+		while (node != _tail) {				// 리스트의 끝까지 순회
+			if (node == iter._node) {		// 삭제할 노드와 비교
+				temp = node->_Prev;			// 삭제할 노드의 앞 노드 포인터
+				temp->_Next = node->_Next;	// 앞 노드의 다음 노드는 삭제 노드의 다음 노드
+				temp = node->_Next;			// 삭제할 노드의 다음 노드 포인터
+				temp->_Prev = node->_Prev;	// 다음 노드의 앞 노드는 삭제할 노드의 앞 노드
+				delete node;				// 노드 삭제
+				--_size;					// 리스트 사이즈 감소
+				return temp;				// 삭제한 노드의 다음 노드 이터레이터 반환
 			}
-			node = node->_Next;
+			node = node->_Next;				// 다음 노드로
 		}
-		return nullptr;
+		return _tail;						// 삭제할 노드가 리스트에 없다면 리스트의 끝 반환
 	}
 
 	void initNode(Node *ptr);
@@ -175,48 +174,27 @@ void CList<T>::initNode(Node *ptr) {
 //헤드 뒤 삽입
 template <typename T>
 void CList<T>::push_front(T data) {
-	Node *node = new Node;
-	Node *temp;
-	if (_head->_Next != _tail) {
-		temp = _head->_Next;
-		node->_data = data;
-		node->_Prev = _head;
-		node->_Next = _head->_Next;
-
-		temp->_Prev = node;
-	}
-	else {
-		node->_data = data;
-		node->_Prev = _head;
-		node->_Next = _tail;
-		_tail->_Prev = node;
-	}
-	_head->_Next = node;
-	++_size;
+	Node *node = new Node;			// 신규 노드
+	Node *nextNode = _head->_Next;	// 헤드의 다음 노드 포인터 저장
+	node->_data = data;				// 삽입 데이터
+	node->_Prev = _head;			// 신규 노드의 앞은 헤드
+	node->_Next = nextNode;			// 신규 노드의 다음은 기존의 헤드의 다음 노드
+	nextNode->_Prev = node;			// 기존 헤드의 다음 노드의 이전은 신규 노드
+	_head->_Next = node;			// 헤드의 다음 노드는 신규 노드
+	++_size;						// 리스트 사이즈 증가
 }
 
 //꼬리 앞 삽입
 template <typename T>
 void CList<T>::push_back(T data) {
-	Node *node = new Node;
-	Node *temp;
-	if (_tail->_Prev != _head) {
-		temp = _tail->_Prev;
-		node->_data = data;
-		node->_Prev = _tail->_Prev;
-		node->_Next = _tail;
-
-		temp->_Next = node;
-	}
-	else {
-		node->_data = data;
-		node->_Prev = _head;
-		node->_Next = _tail;
-		_head->_Next = node;
-	}
-	
-	_tail->_Prev = node;
-	++_size;
+	Node *node = new Node;			// 신규 노드
+	Node *prevNode = _tail->_Prev;	// 꼬리의 앞 노드 포인터 저장
+	node->_data = data;				// 삽입 데이터
+	node->_Prev = prevNode;			// 신규 노드의 앞은 기존 꼬리 헤드의 앞 노드
+	node->_Next = _tail;			// 신규 노드의 다음 노드는 꼬리
+	prevNode->_Next = node;			// 기존 꼬리 노드의 앞 노드의 다음은 신규 노드
+	_tail->_Prev = node;			// 꼬리의 앞 노드는 신규 노드
+	++_size;						// 리스트 사이즈 증가
 }
 
 //전부 삭제
