@@ -57,15 +57,8 @@ bool Astar::Start(vector<vector<int> > maps, int iDepaX, int iDepaY, int iDestX,
 	int iPosY;					// 노드 위치 Y
 	int iTempX;
 	int iTempY;
-	int iListSize;				// 오픈 리스트 크기
-	int iListNum;				// 정렬 진행위치
-	int iListEnd;				// 리스트 끝
-	int iSortNum;				// 정렬 진행 위치
-	stNode *compareObject;					//비교할 값
-	stNode *sortObject;						//정렬할 값
 	CList<stNode *>::iterator iter;			//리스트 순환을 위한 이터레이터
 	CList<stNode *>::iterator iter_end;		//리스트 순환을 위한 이터레이터
-	CList<stNode *>::iterator iterSort;		//정렬을 위한 이터레이터
 	vector<int> *elementArrPtr;
 	int *elementPtr;
 	BYTE *bypTempMap;				// 임시 맵
@@ -147,49 +140,15 @@ bool Astar::Start(vector<vector<int> > maps, int iDepaX, int iDepaY, int iDestX,
 
 	// 탐색
 	while (true) {
-		iListSize = g_openList.size();
-
 		// 리스트 사이즈가 0이면 길찾기 실패
-		if (iListSize == 0) {
+		if (g_openList.size() == 0) {
 			// 메모리 정리
 			Release();
 
 			return false;
 		}
 
-		// 오픈 리스트 정렬
-		if (iListSize >= 2) {
-			iListNum = 0;
-			iListEnd = iListSize - 1;
-
-			iter = g_openList.begin();
-			while (iListNum != iListEnd) {
-				iterSort = iter;
-				compareObject = iterSort._node->_Next->_data;
-
-				iSortNum = iListNum;
-				while (iSortNum >= 0) {
-					sortObject = iterSort._node->_data;
-
-					//F 더 높은거 뒤로 보냄
-					if (sortObject->dF > compareObject->dF) {
-						iterSort._node->_Next->_data = sortObject;
-						iterSort._node->_data = compareObject;
-					}
-					else {
-						break;
-					}
-					--iterSort;
-					--iSortNum;
-				}
-
-				++iListNum;
-				++iter;
-			}//while (iListNum != iListEnd)
-		}//dF (iListSize >= 2)
-
-
-
+		// 오픈 리스트에서 정렬된 노드를 하나 꺼냄
 		stpNode = g_openList.data();
 		g_openList.pop_front();
 
@@ -356,6 +315,9 @@ bool Astar::Start(vector<vector<int> > maps, int iDepaX, int iDepaY, int iDestX,
 
 			g_closedList.push_front(stpNode);
 		}
+
+		// 오픈 리스트 정렬
+		SortOpenList();
 
 	}//while (!bFinish)
 
@@ -529,4 +491,43 @@ void Astar::Release()
 		delete[] m_bypMap;
 		m_bypMap = nullptr;
 	}
+}
+
+// 오픈 리스트 정렬
+void Astar::SortOpenList()
+{
+	if (g_openList.size() < 2)
+		return;
+
+	int iListNum = 0;						// 정렬 진행위치
+	int iListEnd = g_openList.size() - 1;	// 리스트 끝
+	int iSortNum = 0;						// 정렬 진행 위치
+	stNode* compareObject;					//비교할 값
+	stNode* sortObject;						//정렬할 값
+
+	CList<stNode*>::iterator iter = g_openList.begin();
+	CList<stNode*>::iterator iterSort = nullptr;
+	while (iListNum != iListEnd) {
+		iterSort = iter;
+		compareObject = iterSort._node->_Next->_data;
+
+		iSortNum = iListNum;
+		while (iSortNum >= 0) {
+			sortObject = iterSort._node->_data;
+
+			//F 더 높은거 뒤로 보냄
+			if (sortObject->dF > compareObject->dF) {
+				iterSort._node->_Next->_data = sortObject;
+				iterSort._node->_data = compareObject;
+			}
+			else {
+				break;
+			}
+			--iterSort;
+			--iSortNum;
+		}
+
+		++iListNum;
+		++iter;
+	}//while (iListNum != iListEnd)
 }

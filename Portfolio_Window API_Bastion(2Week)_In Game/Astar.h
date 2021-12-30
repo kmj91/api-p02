@@ -49,6 +49,7 @@ public:
 
 private:
 	void Release();			// 메모리 정리
+	void SortOpenList();	// 오픈 리스트 정렬
 
 private:
 	int m_iDepaX;			// 출발지 x
