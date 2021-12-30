@@ -1,3 +1,7 @@
+// 기명준
+// 길찾기 알고리즘 A*
+// 몬스터가 플레이어를 향해 추적할 때 사용
+
 #pragma once
 
 #include <list>
@@ -42,6 +46,9 @@ public:
 	void CreateNode(int iPosX, int iPosY, stNode *ParentNode, double dPlus);
 
 	bool GetFinishNode(_Node *outNode);			// 길찾기 완료 마지막 노드 얻기
+
+private:
+	void Release();			// 메모리 정리
 
 private:
 	int m_iDepaX;			// 출발지 x

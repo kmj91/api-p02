@@ -2468,8 +2468,8 @@ void SaveProcess()
 	
 
 
-	const char *pJson = StringJSON.GetString();
-	int size = StringJSON.GetSize();
+	const char *pJson = StringJSON.GetString();		// JSON 데이터
+	int size = StringJSON.GetSize();				// 크기
 
 	//WCHAR * wchBuffer = (WCHAR *)new char[size];
 

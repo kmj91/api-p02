@@ -1,3 +1,7 @@
+// 기명준
+// 길찾기 알고리즘 A*
+// 몬스터가 플레이어를 향해 추적할 때 사용
+
 #include "stdafx.h"
 #include "Astar.h"
 #include "CList.h"
@@ -16,6 +20,8 @@ Astar::Astar()
 
 	m_finish = false;
 
+	m_bypMap = nullptr;
+
 	//m_closedList = new list<stNode *>;
 	//m_openList = new list<stNode *>;
 	//m_outList = new list<stNode *>;
@@ -27,9 +33,19 @@ Astar::~Astar()
 	//delete m_closedList;
 	//delete m_openList;
 	//delete m_outList;
+
+	// 메모리 정리
+	Release();
 }
 
 
+// 길찾기 시작
+// maps : 맵 속성 정보
+// iDepaX : 출발지 좌표 X
+// iDepaY : 출발지 좌표 Y
+// iDestX : 도착지 좌표 X
+// iDestY : 도착지 좌표 Y
+// 반환 값 : 길찾기 실패 false, 성공 true
 bool Astar::Start(vector<vector<int> > maps, int iDepaX, int iDepaY, int iDestX, int iDestY)
 {
 	int iMapSizeY;					// 맵 세로 길이
@@ -48,7 +64,7 @@ bool Astar::Start(vector<vector<int> > maps, int iDepaX, int iDepaY, int iDestX,
 	stNode *compareObject;					//비교할 값
 	stNode *sortObject;						//정렬할 값
 	CList<stNode *>::iterator iter;			//리스트 순환을 위한 이터레이터
-	CList<stNode *>::iterator iter_end;			//리스트 순환을 위한 이터레이터
+	CList<stNode *>::iterator iter_end;		//리스트 순환을 위한 이터레이터
 	CList<stNode *>::iterator iterSort;		//정렬을 위한 이터레이터
 	vector<int> *elementArrPtr;
 	int *elementPtr;
@@ -133,27 +149,10 @@ bool Astar::Start(vector<vector<int> > maps, int iDepaX, int iDepaY, int iDestX,
 	while (true) {
 		iListSize = g_openList.size();
 
+		// 리스트 사이즈가 0이면 길찾기 실패
 		if (iListSize == 0) {
-			// 못찾음
-
-			iter = g_openList.begin();
-		 	iter_end = g_openList.end();
-			while (iter != iter_end) {
-				stpNode = *iter;
-				delete stpNode;
-				++iter;
-			}
-			g_openList.clear();
-			iter = g_closedList.begin();
-			iter_end = g_closedList.end();
-			while (iter != iter_end) {
-				stpNode = *iter;
-				delete stpNode;
-				++iter;
-			}
-			g_closedList.clear();
-
-			delete[] m_bypMap;
+			// 메모리 정리
+			Release();
 
 			return false;
 		}
@@ -469,50 +468,16 @@ bool Astar::GetFinishNode(_Node * outNode)
 	stNode *stpNode;
 
 	if (m_finishNode->parent == NULL) {
-
 		// 메모리 정리
-		iter = g_openList.begin();
-		iter_end = g_openList.end();
-		while (iter != iter_end) {
-			stpNode = *iter;
-			delete stpNode;
-			++iter;
-		}
-		g_openList.clear();
-		iter = g_closedList.begin();
-		iter_end = g_closedList.end();
-		while (iter != iter_end) {
-			stpNode = *iter;
-			delete stpNode;
-			++iter;
-		}
-		g_closedList.clear();
-
-		delete[] m_bypMap;
+		Release();
 
 		return false;
 	}
 
 	// 에러
 	if (m_finishNode == m_finishNode->parent->parent) {
-
 		// 메모리 정리
-		iter = g_openList.begin();
-		iter_end = g_openList.end();
-		while (iter != iter_end) {
-			delete *iter;
-			++iter;
-		}
-		g_openList.clear();
-		iter = g_closedList.begin();
-		iter_end = g_closedList.end();
-		while (iter != iter_end) {
-			delete *iter;
-			++iter;
-		}
-		g_closedList.clear();
-
-		delete[] m_bypMap;
+		Release();
 
 		return false;
 	}
@@ -529,4 +494,39 @@ bool Astar::GetFinishNode(_Node * outNode)
 	m_finishNode = m_finishNode->parent;
 
 	return true;
+}
+
+
+
+
+// 메모리 정리
+void Astar::Release()
+{
+	CList<stNode*>::iterator iter;			//리스트 순환을 위한 이터레이터
+	CList<stNode*>::iterator iter_end;		//리스트 순환을 위한 이터레이터
+
+	// 오픈 리스트 메모리 정리
+	iter = g_openList.begin();
+	iter_end = g_openList.end();
+	while (iter != iter_end) {
+		delete* iter;
+		++iter;
+	}
+	g_openList.clear();
+
+	// 클로즈드 리스트 메모리 정리
+	iter = g_closedList.begin();
+	iter_end = g_closedList.end();
+	while (iter != iter_end) {
+		delete* iter;
+		++iter;
+	}
+	g_closedList.clear();
+
+	// 그리드 맵 정리
+	if (m_bypMap != nullptr)
+	{
+		delete[] m_bypMap;
+		m_bypMap = nullptr;
+	}
 }

@@ -303,6 +303,9 @@
     <ClInclude Include="UI_Title.h">
       <Filter>mainGame\Object\UI</Filter>
     </ClInclude>
+    <ClInclude Include="Astar.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="keyManager.cpp">
@@ -502,6 +505,9 @@
     </ClCompile>
     <ClCompile Include="UI_Title.cpp">
       <Filter>mainGame\Object\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Astar.cpp">
+      <Filter>Manager</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
