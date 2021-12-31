@@ -50,6 +50,7 @@ public:
 private:
 	void Release();			// 메모리 정리
 	void SortOpenList();	// 오픈 리스트 정렬
+	void AdjacentNode(stNode *stpNode);			// 인접한 노드 생성
 
 private:
 	int m_iDepaX;			// 출발지 x

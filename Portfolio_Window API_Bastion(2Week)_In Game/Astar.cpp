@@ -148,7 +148,7 @@ bool Astar::Start(vector<vector<int> > maps, int iDepaX, int iDepaY, int iDestX,
 			return false;
 		}
 
-		// 오픈 리스트에서 정렬된 노드를 하나 꺼냄
+		// 정렬된 오픈 리스트에서 F값이 가장 작은 노드를 하나 꺼냄
 		stpNode = g_openList.data();
 		g_openList.pop_front();
 
@@ -530,4 +530,10 @@ void Astar::SortOpenList()
 		++iListNum;
 		++iter;
 	}//while (iListNum != iListEnd)
+}
+
+
+// 인접한 노드 생성
+void Astar::AdjacentNode(stNode* stpNode)
+{
 }
