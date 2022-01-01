@@ -42,15 +42,14 @@ public:
 	~Astar();
 
 	bool Start(vector<vector<int> > maps, int iDepaX, int iDepaY, int iDestX, int iDestY);
-	void CheckNode(int iPosX, int iPosY, stNode *stpNode, double dPlus);
-	void CreateNode(int iPosX, int iPosY, stNode *ParentNode, double dPlus);
-
 	bool GetFinishNode(_Node *outNode);			// 길찾기 완료 마지막 노드 얻기
 
 private:
 	void Release();			// 메모리 정리
 	void SortOpenList();	// 오픈 리스트 정렬
 	void AdjacentNode(stNode *stpNode);			// 인접한 노드 생성
+	void CheckNode(int iPosX, int iPosY, stNode* stpNode, double dPlus);
+	void CreateNode(int iPosX, int iPosY, stNode* ParentNode, double dPlus);
 
 private:
 	int m_iDepaX;			// 출발지 x

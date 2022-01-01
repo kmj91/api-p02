@@ -48,28 +48,21 @@ Astar::~Astar()
 // 반환 값 : 길찾기 실패 false, 성공 true
 bool Astar::Start(vector<vector<int> > maps, int iDepaX, int iDepaY, int iDestX, int iDestY)
 {
-	int iMapSizeY;					// 맵 세로 길이
-	int iMapSizeX;					// 맵 가로 길이
 	int iCntY;
 	int iCntX;
-	int answer = 0;				// 결과 반환값
-	int iPosX;					// 노드 위치 X
-	int iPosY;					// 노드 위치 Y
-	int iTempX;
-	int iTempY;
 	CList<stNode *>::iterator iter;			//리스트 순환을 위한 이터레이터
 	CList<stNode *>::iterator iter_end;		//리스트 순환을 위한 이터레이터
 	vector<int> *elementArrPtr;
 	int *elementPtr;
-	BYTE *bypTempMap;				// 임시 맵
+	BYTE *bypTempMap;						// 임시 맵
 	stNode *stpNode;
 	int iResultX;
 	int iResultY;
 	int iTemp;
 
 	elementArrPtr = maps.data();			// 0, 0 포인터
-	iMapSizeY = maps.size();				// 세로 사이즈
-	iMapSizeX = elementArrPtr->size();		// 가로 사이즈
+	m_iMapSizeY = maps.size();				// 세로 사이즈
+	m_iMapSizeX = elementArrPtr->size();	// 가로 사이즈
 
 	// 출발지 도착지
 	m_iDepaX = iDepaX;
@@ -77,17 +70,16 @@ bool Astar::Start(vector<vector<int> > maps, int iDepaX, int iDepaY, int iDestX,
 	m_iDestX = iDestX;
 	m_iDestY = iDestY;
 
-	m_iMapSizeY = iMapSizeY;
-	m_iMapSizeX = iMapSizeX;
+	
 	// 로컬 변수에 맵 생성
-	m_bypMap = new BYTE[iMapSizeY * iMapSizeX];
+	m_bypMap = new BYTE[m_iMapSizeY * m_iMapSizeX];
 
 	bypTempMap = m_bypMap;
 	iCntY = 0;
-	while (iCntY < iMapSizeY) {
+	while (iCntY < m_iMapSizeY) {
 		elementPtr = elementArrPtr->data();
 		iCntX = 0;
-		while (iCntX < iMapSizeX) {
+		while (iCntX < m_iMapSizeX) {
 			// 맵정보 입력
 			*bypTempMap = *elementPtr;
 
@@ -127,24 +119,24 @@ bool Astar::Start(vector<vector<int> > maps, int iDepaX, int iDepaY, int iDestX,
 
 	bypTempMap = m_bypMap;
 	// 출발지점 마킹
-	bypTempMap = (bypTempMap + m_iDepaX) + (m_iDepaY * iMapSizeX);
+	bypTempMap = (bypTempMap + m_iDepaX) + (m_iDepaY * m_iMapSizeX);
 	//*bypTempMap = *bypTempMap | DEPA;
 	*bypTempMap = DEPA;
 
 	bypTempMap = m_bypMap;
 	// 도착지점 마킹
-	bypTempMap = (bypTempMap + m_iDestX) + (m_iDestY * iMapSizeX);
+	bypTempMap = (bypTempMap + m_iDestX) + (m_iDestY * m_iMapSizeX);
 	//*bypTempMap = *bypTempMap | DEST;
 	*bypTempMap = DEST;
 
 
-	// 탐색
+	// 경로 탐색
 	while (true) {
 		// 리스트 사이즈가 0이면 길찾기 실패
 		if (g_openList.size() == 0) {
 			// 메모리 정리
 			Release();
-
+			// 경로 탐색 실패
 			return false;
 		}
 
@@ -152,274 +144,25 @@ bool Astar::Start(vector<vector<int> > maps, int iDepaX, int iDepaY, int iDestX,
 		stpNode = g_openList.data();
 		g_openList.pop_front();
 
-
+		// 도착지 검사
 		bypTempMap = m_bypMap;
-		iPosX = stpNode->iPosX;
-		iPosY = stpNode->iPosY;
-		bypTempMap = (bypTempMap + iPosX) + (iPosY * iMapSizeX);
+		bypTempMap = (bypTempMap + stpNode->iPosX) + (stpNode->iPosY * m_iMapSizeX);
 		if (*bypTempMap == DEST) {
-			// 찾음
-
 			// 마지막 노드 (도착지 노드)
 			m_finishNode = stpNode;
-
-			//delete[] m_bypMap;
-
+			// 경로 탐색 성공
 			return true;
 		}
-		else {
-			bypTempMap = m_bypMap;
-			// 위
-			if (iPosY - 1 >= 0) {
-				iTempY = iPosY - 1;
-				bypTempMap = (bypTempMap + iPosX) + (iTempY * iMapSizeX);
-				if (*bypTempMap != WALL && *bypTempMap != DEPA) {
-					if (*bypTempMap == NODE) {
-						// 노드 비교
-						CheckNode(iPosX, iTempY, stpNode, m_straight_line);
-					}
-					else if (*bypTempMap == EMPT || *bypTempMap == DEST || *bypTempMap == EMPT_2) {
-						// 노드 생성
-						CreateNode(iPosX, iTempY, stpNode, m_straight_line);
-					}
-				}
-				//위치 복구
-				bypTempMap = m_bypMap;
 
-				// 위 오른쪽
-				if (iPosX + 1 < m_iMapSizeX) {
-					iTempY = iPosY - 1;
-					iTempX = iPosX + 1;
-
-					bypTempMap = (bypTempMap + iTempX) + (iTempY * iMapSizeX);
-					if (*bypTempMap != WALL && *bypTempMap != DEPA) {
-						if (*bypTempMap == NODE) {
-							CheckNode(iTempX, iTempY, stpNode, m_diagonal_line);
-						}
-						else if (*bypTempMap == EMPT || *bypTempMap == DEST || *bypTempMap == EMPT_2) {
-							CreateNode(iTempX, iTempY, stpNode, m_diagonal_line);
-						}
-					}
-					//위치 복구
-					bypTempMap = m_bypMap;
-				}
-
-				// 위 왼쪽
-				if (iPosX - 1 >= 0) {
-					iTempY = iPosY - 1;
-					iTempX = iPosX - 1;
-
-					bypTempMap = (bypTempMap + iTempX) + (iTempY * iMapSizeX);
-					if (*bypTempMap != WALL && *bypTempMap != DEPA) {
-						if (*bypTempMap == NODE) {
-							CheckNode(iTempX, iTempY, stpNode, m_diagonal_line);
-						}
-						else if (*bypTempMap == EMPT || *bypTempMap == DEST || *bypTempMap == EMPT_2) {
-							CreateNode(iTempX, iTempY, stpNode, m_diagonal_line);
-						}
-					}
-					//위치 복구
-					bypTempMap = m_bypMap;
-				}
-			}
-
-			// 오른쪽
-			if (iPosX + 1 < iMapSizeX) {
-				iTempX = iPosX + 1;
-
-				bypTempMap = (bypTempMap + iTempX) + (iPosY * iMapSizeX);
-				if (*bypTempMap != WALL && *bypTempMap != DEPA) {
-					if (*bypTempMap == NODE) {
-						CheckNode(iTempX, iPosY, stpNode, m_straight_line);
-					}
-					else if (*bypTempMap == EMPT || *bypTempMap == DEST || *bypTempMap == EMPT_2) {
-						CreateNode(iTempX, iPosY, stpNode, m_straight_line);
-					}
-				}
-				//위치 복구
-				bypTempMap = m_bypMap;
-			}
-
-			// 아래
-			if (iPosY + 1 < iMapSizeY) {
-				iTempY = iPosY + 1;
-
-				bypTempMap = (bypTempMap + iPosX) + (iTempY * iMapSizeX);
-				if (*bypTempMap != WALL && *bypTempMap != DEPA) {
-					if (*bypTempMap == NODE) {
-						CheckNode(iPosX, iTempY, stpNode, m_straight_line);
-					}
-					else if (*bypTempMap == EMPT || *bypTempMap == DEST || *bypTempMap == EMPT_2) {
-						CreateNode(iPosX, iTempY, stpNode, m_straight_line);
-					}
-				}
-				//위치 복구
-				bypTempMap = m_bypMap;
-
-
-				// 아래 오른쪽
-				if (iPosX + 1 < iMapSizeX) {
-					iTempY = iPosY + 1;
-					iTempX = iPosX + 1;
-
-					bypTempMap = (bypTempMap + iTempX) + (iTempY * iMapSizeX);
-					if (*bypTempMap != WALL && *bypTempMap != DEPA) {
-						if (*bypTempMap == NODE) {
-							CheckNode(iTempX, iTempY, stpNode, m_diagonal_line);
-						}
-						else if (*bypTempMap == EMPT || *bypTempMap == DEST || *bypTempMap == EMPT_2) {
-							CreateNode(iTempX, iTempY, stpNode, m_diagonal_line);
-						}
-					}
-					//위치 복구
-					bypTempMap = m_bypMap;
-				}
-
-
-				// 아래 왼쪽
-				if (iPosX - 1 >= 0) {
-					iTempY = iPosY + 1;
-					iTempX = iPosX - 1;
-
-					bypTempMap = (bypTempMap + iTempX) + (iTempY * iMapSizeX);
-					if (*bypTempMap != WALL && *bypTempMap != DEPA) {
-						if (*bypTempMap == NODE) {
-							CheckNode(iTempX, iTempY, stpNode, m_diagonal_line);
-						}
-						else if (*bypTempMap == EMPT || *bypTempMap == DEST || *bypTempMap == EMPT_2) {
-							CreateNode(iTempX, iTempY, stpNode, m_diagonal_line);
-						}
-					}
-					//위치 복구
-					bypTempMap = m_bypMap;
-				}
-			}
-
-			// 왼쪽
-			if (iPosX - 1 >= 0) {
-				iTempX = iPosX - 1;
-
-				bypTempMap = (bypTempMap + iTempX) + (iPosY * iMapSizeX);
-				if (*bypTempMap != WALL && *bypTempMap != DEPA) {
-					if (*bypTempMap == NODE) {
-						CheckNode(iTempX, iPosY, stpNode, m_straight_line);
-					}
-					else if (*bypTempMap == EMPT || *bypTempMap == DEST || *bypTempMap == EMPT_2) {
-						CreateNode(iTempX, iPosY, stpNode, m_straight_line);
-					}
-				}
-				//위치 복구
-				bypTempMap = m_bypMap;
-			}
-
-
-			g_closedList.push_front(stpNode);
-		}
-
+		// 인접한 노드 생성
+		AdjacentNode(stpNode);
+		// 이번에 탐색한 노드 Closed list로
+		g_closedList.push_front(stpNode);
 		// 오픈 리스트 정렬
 		SortOpenList();
-
-	}//while (!bFinish)
-
-
+	}//while (!true)
 
 	return false;
-}
-
-
-// 노드 F값 체크
-void Astar::CheckNode(int iPosX, int iPosY, stNode *stpNode, double dPlus) {
-	stNode *stpCheckNode;
-	CList<stNode *>::iterator iter;			//리스트 순환을 위한 이터레이터
-	CList<stNode *>::iterator iter_end;		//리스트의 끝
-
-	iter = g_closedList.begin();
-	iter_end = g_closedList.end();
-	while (iter != iter_end) {
-		stpCheckNode = *iter;
-		if (stpCheckNode->iPosX == iPosX && stpCheckNode->iPosY == iPosY) {
-			// F값 비교
-			//if (stpCheckNode->dF > stpNode->dF) {
-			//	stpCheckNode->parent = stpNode;
-			//}
-
-			// F값 비교
-			if ((int)(stpCheckNode->dF + 0.5) > (int)(stpNode->dF + 0.5)) {
-				stpCheckNode->parent = stpNode;
-			}
-
-			//if (stpCheckNode->dF > stpNode->dF) {
-			//	stpCheckNode->parent = stpNode;
-			//	stpCheckNode->dG = stpNode->dG + dPlus;
-			//	stpCheckNode->dF = stpCheckNode->dG + stpCheckNode->dH;
-			//}
-			break;
-		}
-		++iter;
-	}//while(iter != iter_end)
-}
-
-
-void Astar::CreateNode(int iPosX, int iPosY, stNode *ParentNode, double dPlus) {
-	stNode *newNode;
-	int iResultX;
-	int iResultY;
-	//double dH;
-	double dG;
-	BYTE * bypTempMap;
-	double dTemp;
-	double dTempStraight;
-	double dTempDiagonal;
-
-	newNode = new stNode;
-
-	if (iPosX > m_iDestX) {
-		iResultX = iPosX - m_iDestX;
-	}
-	else {
-		iResultX = m_iDestX - iPosX;
-	}
-
-	if (iPosY > m_iDestY) {
-		iResultY = iPosY - m_iDestY;
-	}
-	else {
-		iResultY = m_iDestY - iPosY;
-	}
-
-	//dH = iResultX + iResultY;
-	// H값 수정
-	if (iResultX > iResultY) {
-		dTempStraight = iResultX - iResultY;
-		dTempDiagonal = iResultY * m_diagonal_line;
-		dTemp = dTempStraight + dTempDiagonal;
-	}
-	else {
-		dTempStraight = iResultY - iResultX;
-		dTempDiagonal = iResultX * m_diagonal_line;
-		dTemp = dTempStraight + dTempDiagonal;
-	}
-
-
-	//dG = ParentNode->dG + 1;
-	dG = ParentNode->dG + dPlus;
-
-
-	newNode->parent = ParentNode;
-	//newNode->dF = dG + dH;
-	newNode->dF = dG + dTemp;
-	newNode->dG = dG;
-	//newNode->dH = dH;
-	newNode->dH = dTemp;
-	newNode->iPosX = iPosX;
-	newNode->iPosY = iPosY;
-	g_openList.push_front(newNode);
-
-	bypTempMap = m_bypMap;
-	bypTempMap = (bypTempMap + iPosX) + (iPosY * m_iMapSizeX);
-	if (*bypTempMap != DEST) {
-		*bypTempMap = NODE;
-	}
 }
 
 
@@ -534,6 +277,252 @@ void Astar::SortOpenList()
 
 
 // 인접한 노드 생성
+// stpNode : 부모가 되는 노드
 void Astar::AdjacentNode(stNode* stpNode)
 {
+	int iPosX = stpNode->iPosX;		// 노드 위치 X
+	int iPosY = stpNode->iPosY;		// 노드 위치 Y
+	int iTempX;
+	int iTempY;
+	BYTE* bypTempMap = m_bypMap;	// 임시 맵
+
+	// 위
+	if (iPosY - 1 >= 0) {
+		iTempY = iPosY - 1;
+		bypTempMap = (bypTempMap + iPosX) + (iTempY * m_iMapSizeX);
+		if (*bypTempMap != WALL && *bypTempMap != DEPA) {
+			if (*bypTempMap == NODE) {
+				// 노드 비교
+				CheckNode(iPosX, iTempY, stpNode, m_straight_line);
+			}
+			else if (*bypTempMap == EMPT || *bypTempMap == DEST || *bypTempMap == EMPT_2) {
+				// 노드 생성
+				CreateNode(iPosX, iTempY, stpNode, m_straight_line);
+			}
+		}
+		//위치 복구
+		bypTempMap = m_bypMap;
+
+		// 위 오른쪽
+		if (iPosX + 1 < m_iMapSizeX) {
+			iTempY = iPosY - 1;
+			iTempX = iPosX + 1;
+
+			bypTempMap = (bypTempMap + iTempX) + (iTempY * m_iMapSizeX);
+			if (*bypTempMap != WALL && *bypTempMap != DEPA) {
+				if (*bypTempMap == NODE) {
+					CheckNode(iTempX, iTempY, stpNode, m_diagonal_line);
+				}
+				else if (*bypTempMap == EMPT || *bypTempMap == DEST || *bypTempMap == EMPT_2) {
+					CreateNode(iTempX, iTempY, stpNode, m_diagonal_line);
+				}
+			}
+			//위치 복구
+			bypTempMap = m_bypMap;
+		}
+
+		// 위 왼쪽
+		if (iPosX - 1 >= 0) {
+			iTempY = iPosY - 1;
+			iTempX = iPosX - 1;
+
+			bypTempMap = (bypTempMap + iTempX) + (iTempY * m_iMapSizeX);
+			if (*bypTempMap != WALL && *bypTempMap != DEPA) {
+				if (*bypTempMap == NODE) {
+					CheckNode(iTempX, iTempY, stpNode, m_diagonal_line);
+				}
+				else if (*bypTempMap == EMPT || *bypTempMap == DEST || *bypTempMap == EMPT_2) {
+					CreateNode(iTempX, iTempY, stpNode, m_diagonal_line);
+				}
+			}
+			//위치 복구
+			bypTempMap = m_bypMap;
+		}
+	}
+
+	// 오른쪽
+	if (iPosX + 1 < m_iMapSizeX) {
+		iTempX = iPosX + 1;
+
+		bypTempMap = (bypTempMap + iTempX) + (iPosY * m_iMapSizeX);
+		if (*bypTempMap != WALL && *bypTempMap != DEPA) {
+			if (*bypTempMap == NODE) {
+				CheckNode(iTempX, iPosY, stpNode, m_straight_line);
+			}
+			else if (*bypTempMap == EMPT || *bypTempMap == DEST || *bypTempMap == EMPT_2) {
+				CreateNode(iTempX, iPosY, stpNode, m_straight_line);
+			}
+		}
+		//위치 복구
+		bypTempMap = m_bypMap;
+	}
+
+	// 아래
+	if (iPosY + 1 < m_iMapSizeY) {
+		iTempY = iPosY + 1;
+
+		bypTempMap = (bypTempMap + iPosX) + (iTempY * m_iMapSizeX);
+		if (*bypTempMap != WALL && *bypTempMap != DEPA) {
+			if (*bypTempMap == NODE) {
+				CheckNode(iPosX, iTempY, stpNode, m_straight_line);
+			}
+			else if (*bypTempMap == EMPT || *bypTempMap == DEST || *bypTempMap == EMPT_2) {
+				CreateNode(iPosX, iTempY, stpNode, m_straight_line);
+			}
+		}
+		//위치 복구
+		bypTempMap = m_bypMap;
+
+
+		// 아래 오른쪽
+		if (iPosX + 1 < m_iMapSizeX) {
+			iTempY = iPosY + 1;
+			iTempX = iPosX + 1;
+
+			bypTempMap = (bypTempMap + iTempX) + (iTempY * m_iMapSizeX);
+			if (*bypTempMap != WALL && *bypTempMap != DEPA) {
+				if (*bypTempMap == NODE) {
+					CheckNode(iTempX, iTempY, stpNode, m_diagonal_line);
+				}
+				else if (*bypTempMap == EMPT || *bypTempMap == DEST || *bypTempMap == EMPT_2) {
+					CreateNode(iTempX, iTempY, stpNode, m_diagonal_line);
+				}
+			}
+			//위치 복구
+			bypTempMap = m_bypMap;
+		}
+
+
+		// 아래 왼쪽
+		if (iPosX - 1 >= 0) {
+			iTempY = iPosY + 1;
+			iTempX = iPosX - 1;
+
+			bypTempMap = (bypTempMap + iTempX) + (iTempY * m_iMapSizeX);
+			if (*bypTempMap != WALL && *bypTempMap != DEPA) {
+				if (*bypTempMap == NODE) {
+					CheckNode(iTempX, iTempY, stpNode, m_diagonal_line);
+				}
+				else if (*bypTempMap == EMPT || *bypTempMap == DEST || *bypTempMap == EMPT_2) {
+					CreateNode(iTempX, iTempY, stpNode, m_diagonal_line);
+				}
+			}
+			//위치 복구
+			bypTempMap = m_bypMap;
+		}
+	}
+
+	// 왼쪽
+	if (iPosX - 1 >= 0) {
+		iTempX = iPosX - 1;
+
+		bypTempMap = (bypTempMap + iTempX) + (iPosY * m_iMapSizeX);
+		if (*bypTempMap != WALL && *bypTempMap != DEPA) {
+			if (*bypTempMap == NODE) {
+				CheckNode(iTempX, iPosY, stpNode, m_straight_line);
+			}
+			else if (*bypTempMap == EMPT || *bypTempMap == DEST || *bypTempMap == EMPT_2) {
+				CreateNode(iTempX, iPosY, stpNode, m_straight_line);
+			}
+		}
+		//위치 복구
+		bypTempMap = m_bypMap;
+	}
+}
+
+
+// 노드 F값 체크
+void Astar::CheckNode(int iPosX, int iPosY, stNode* stpNode, double dPlus) {
+	stNode* stpCheckNode;
+	CList<stNode*>::iterator iter;			//리스트 순환을 위한 이터레이터
+	CList<stNode*>::iterator iter_end;		//리스트의 끝
+
+	iter = g_closedList.begin();
+	iter_end = g_closedList.end();
+	while (iter != iter_end) {
+		stpCheckNode = *iter;
+		if (stpCheckNode->iPosX == iPosX && stpCheckNode->iPosY == iPosY) {
+			// F값 비교
+			//if (stpCheckNode->dF > stpNode->dF) {
+			//	stpCheckNode->parent = stpNode;
+			//}
+
+			// F값 비교
+			if ((int)(stpCheckNode->dF + 0.5) > (int)(stpNode->dF + 0.5)) {
+				stpCheckNode->parent = stpNode;
+			}
+
+			//if (stpCheckNode->dF > stpNode->dF) {
+			//	stpCheckNode->parent = stpNode;
+			//	stpCheckNode->dG = stpNode->dG + dPlus;
+			//	stpCheckNode->dF = stpCheckNode->dG + stpCheckNode->dH;
+			//}
+			break;
+		}
+		++iter;
+	}//while(iter != iter_end)
+}
+
+
+// 노드 생성
+void Astar::CreateNode(int iPosX, int iPosY, stNode* ParentNode, double dPlus) {
+	stNode* newNode;
+	int iResultX;
+	int iResultY;
+	//double dH;
+	double dG;
+	BYTE* bypTempMap;
+	double dTemp;
+	double dTempStraight;
+	double dTempDiagonal;
+
+	newNode = new stNode;
+
+	if (iPosX > m_iDestX) {
+		iResultX = iPosX - m_iDestX;
+	}
+	else {
+		iResultX = m_iDestX - iPosX;
+	}
+
+	if (iPosY > m_iDestY) {
+		iResultY = iPosY - m_iDestY;
+	}
+	else {
+		iResultY = m_iDestY - iPosY;
+	}
+
+	//dH = iResultX + iResultY;
+	// H값 수정
+	if (iResultX > iResultY) {
+		dTempStraight = iResultX - iResultY;
+		dTempDiagonal = iResultY * m_diagonal_line;
+		dTemp = dTempStraight + dTempDiagonal;
+	}
+	else {
+		dTempStraight = iResultY - iResultX;
+		dTempDiagonal = iResultX * m_diagonal_line;
+		dTemp = dTempStraight + dTempDiagonal;
+	}
+
+
+	//dG = ParentNode->dG + 1;
+	dG = ParentNode->dG + dPlus;
+
+
+	newNode->parent = ParentNode;
+	//newNode->dF = dG + dH;
+	newNode->dF = dG + dTemp;
+	newNode->dG = dG;
+	//newNode->dH = dH;
+	newNode->dH = dTemp;
+	newNode->iPosX = iPosX;
+	newNode->iPosY = iPosY;
+	g_openList.push_front(newNode);
+
+	bypTempMap = m_bypMap;
+	bypTempMap = (bypTempMap + iPosX) + (iPosY * m_iMapSizeX);
+	if (*bypTempMap != DEST) {
+		*bypTempMap = NODE;
+	}
 }
