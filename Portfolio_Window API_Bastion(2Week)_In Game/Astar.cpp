@@ -245,8 +245,8 @@ void Astar::SortOpenList()
 	int iListNum = 0;						// 정렬 진행위치
 	int iListEnd = g_openList.size() - 1;	// 리스트 끝
 	int iSortNum = 0;						// 정렬 진행 위치
-	stNode* compareObject;					//비교할 값
-	stNode* sortObject;						//정렬할 값
+	stNode* compareObject;					// 비교할 값
+	stNode* sortObject;						// 정렬할 값
 
 	CList<stNode*>::iterator iter = g_openList.begin();
 	CList<stNode*>::iterator iterSort = nullptr;
@@ -257,22 +257,20 @@ void Astar::SortOpenList()
 		iSortNum = iListNum;
 		while (iSortNum >= 0) {
 			sortObject = iterSort._node->_data;
+			// F 값이 작다면 넘어감
+			if (sortObject->dF <= compareObject->dF)
+				break;
 
 			//F 더 높은거 뒤로 보냄
-			if (sortObject->dF > compareObject->dF) {
-				iterSort._node->_Next->_data = sortObject;
-				iterSort._node->_data = compareObject;
-			}
-			else {
-				break;
-			}
+			iterSort._node->_Next->_data = sortObject;
+			iterSort._node->_data = compareObject;
+
 			--iterSort;
 			--iSortNum;
 		}
-
 		++iListNum;
 		++iter;
-	}//while (iListNum != iListEnd)
+	}// while (iListNum != iListEnd)
 }
 
 
